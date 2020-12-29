@@ -1,0 +1,495 @@
+{% extends 'base.html' %}
+{% load static convertToDate %}
+{% block title %}Tour Detail | Upclinch{% endblock %}
+{% block content %}
+
+
+<link href="{% static 'functionality/css/page_54.css' %}" rel="stylesheet" type="text/css" />
+<script>
+  var limit = parseInt('{{reqobj.vacant}}');
+  function thisischangefunc(a){
+    if (limit == 0){
+      a.checked = false;
+    }
+    else{
+      var checks = 0;
+      var b = document.getElementsByClassName('custom-control-input');
+      var c = [];
+      var i = 0;
+      for (i = 0 ; i < b.length ; i++){
+        if (i > 2){
+          c.push(b[i]);
+        }
+      }
+      for (i = 0 ; i < c.length ; i++){
+        if (c[i].checked){
+          checks += 1;
+        }
+      }
+      if (checks > limit){
+        a.checked = false;
+      }
+    }
+  }
+</script>
+
+<div class="modal fade" id="cancelmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center text-wrap text-dark font-size-20">
+                        Are you sure you want to cancel your tour?<br>
+                        <a href="{% url 'cancel-tour' reqobj.id %}" class="text-danger font-weight-bolder text-decoration-none">Yes, cancel tour</a>
+                    </div>
+                    <div class="modal-footer border-0">
+                    </div>
+                </div>
+            </div>
+</div>
+
+
+<div class="modal fade" id="removeprop" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center text-wrap text-dark font-size-20">
+                      Are you sure you want to remove the property from the tour?<br>
+                      <a href="#"  id="removeconfirm" class="text-danger font-weight-bolder text-decoration-none">Remove</a>
+                    </div>
+                    <div class="modal-footer border-0">
+                    </div>
+                </div>
+            </div>
+</div>
+
+    
+<div class="modal fade" id="searchmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+          <h5 class="modal-title text-danger" id="exampleModalCenterTitle">Add up to {{reqobj.vacant}} more properties to your tour</h5>
+          <button type="submit" form="additionform" onclick="this.form.submit()" class="btn btn-danger" style="position:relative; left:51.5%;">
+            Done
+        </button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="GET">
+      <input type="text"  name="query" placeholder="Enter city" onclick="checkforsubmit(this)"
+        class="form-control p-0  m-0 border border-secondary pl-2 bg-transparent ml-3" id="BuyerName"
+        autocomplete="off"
+        style="background-image: url('{% static 'functionality/images/search.png'  %}');
+         background-repeat: no-repeat;
+                                    background-size: 20px 20px;
+                                    background-position: 99% 35%;
+                                    margin-right:20px;
+                                    width:96.5%;
+                                    "
+        >
+      </form>
+      <div class="modal-body">
+          <div class="card border-0 mb-0" id="header_Card">
+              <div class="card-body mb-0">
+                <form>
+                  <div class="row ml-0 mb-0" style="width:1100px;">
+                    <div class="col-sm-5 m-0 p-1 mb-0" style="background-color: rgb(228, 228, 228);">
+                      <div class="card-body m-0 p-0">
+                        <h5 class="card-title font-weight-normal">Property Type</h5>
+                        <div class="row mx-auto" style="width:500px;">
+                          <div class="btn-group-toggle m-1 ml-3 bg-white" data-toggle="buttons">
+                            <label class="btn btn-outline-dark width-130">
+                              <input type="checkbox"> Single Family
+                            </label>
+                          </div>
+                          <div class="btn-group-toggle m-1 ml-2 bg-white" data-toggle="buttons">
+                            <label class="btn btn-outline-dark width-130">
+                              <input type="checkbox"> Town Home
+                            </label>
+                          </div>
+                          <div class="btn-group-toggle m-1 ml-2 bg-white" data-toggle="buttons">
+                            <label class="btn btn-outline-dark width-130">
+                              <input type="checkbox"> Condominium
+                            </label>
+                          </div>
+                        </div>
+                        <div class="row mx-auto" style="width: 380px;">
+                          <div class="btn-group-toggle m-1 ml-3 bg-white" data-toggle="buttons">
+                            <label class="btn btn-outline-dark width-130">
+                              <input type="checkbox"> Multi Family
+                            </label>
+                          </div>
+                          <div class="btn-group-toggle m-1 ml-2 bg-white" data-toggle="buttons">
+                            <label class="btn btn-outline-dark width-130">
+                              <input type="checkbox"> Land
+                            </label>
+                          </div>
+                        </div>
+                        <div class="row mx-auto">
+                          <div class="col">
+                          <h5 class="card-title font-weight-normal">Price</h5>
+                          <div class="row form-group ml-4" style="width:300px;">
+                            <div class="col-sm-5 mt-2">
+                              <select class="form-control" id="exampleFormControlSelect1" placeholder="max"
+                                >
+                                <option selected disabled>min</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                              </select>
+                            </div>
+                            <div class="col-sm-1 mt-2">
+                              <span class="font-weight-bold font-size-30">-</span>
+                            </div>
+                            <div class="col-sm-5 mt-2">
+                              <select class="form-control" id="exampleFormControlSelect1" >
+                                <option selected disabled>max</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                              </select>
+                            </div>
+                          </div>
+                          </div>
+                          <div class="col">
+                                  <h5 class="card-title font-weight-normal font-size-16">Stories</h5>
+                                  <select class="form-control mt-4" id="exampleFormControlSelect1" placeholder="max"
+                                    >
+                                    <option selected disabled hidden></option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                          </div>
+                        </div>
+                        <div class="row mx-auto m-0 p-0">
+                            <div class="col">
+                              <h5 class="card-title font-weight-normal">Beds</h5>
+                              <input type="range" class="custom-range " min="0" max="5" step="0.5" id="customRange3">
+                            </div>
+                          <div class="col">
+                              <h5 class="card-title font-weight-normal">Baths</h5>
+                              <input type="range" class="custom-range" min="0" max="5" step="0.5" id="customRange3">
+                          </div>
+                        </div>
+                        <div class="row mx-auto">
+                            <div class="col">
+                              <h5 class="card-title font-weight-normal">Square Feet</h5>
+                              <div class="row form-group">
+                                <div class="col-sm-5 mt-3">
+                                  <select class="form-control" id="exampleFormControlSelect1" placeholder="max"
+                                    >
+                                    <option selected disabled>min</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-1 mt-3">
+                                  <span class="font-weight-bold font-size-30">-</span>
+                                </div>
+                                <div class="col-sm-5 mt-3">
+                                  <select class="form-control" id="exampleFormControlSelect1" >
+                                    <option selected disabled>max</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col">
+                                  <h5 class="card-title font-weight-normal ml-4">Days on Market</h5>
+                                  <select class="form-control ml-5 mt-4" id="exampleFormControlSelect1" >
+                                    <option selected disabled hidden></option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                            </div>
+                        </div>
+                        <div class="row mx-auto">
+                            <div class="col">
+                              <h5 class="card-title font-weight-normal">Lot Size</h5>
+                              <div class="row form-group" style="width:300px;">
+                                <div class="col-sm-5 mt-2 ml-2">
+                                  <select class="form-control" id="exampleFormControlSelect1" placeholder="max"
+                                    >
+                                    <option selected disabled>min</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-1 mt-2">
+                                  <span class="font-weight-bold font-size-30">-</span>
+                                </div>
+                                <div class="col-sm-5 mt-2">
+                                  <select class="form-control" id="exampleFormControlSelect1" >
+                                    <option selected disabled>max</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col">
+                              <h5 class="card-title font-weight-normal">Include</h5>
+                                <div class="row mt-4">
+                                  <div class="custom-control custom-checkbox">
+                                      <input type="checkbox" class="custom-control-input" id="customChecka">
+                                      <label class="custom-control-label" for="customChecka">Active</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                  <div class="custom-control custom-checkbox">
+                                      <input type="checkbox" class="custom-control-input" id="customCheckb">
+                                      <label class="custom-control-label" for="customCheckb">Pending</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                  <div class="custom-control custom-checkbox">
+                                      <input type="checkbox" class="custom-control-input" id="customCheckc">
+                                      <label class="custom-control-label" for="customCheckc">Sold</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mx-auto m-0 p-0">
+                          <h5 class="card-title font-weight-normal">Year Built</h5>
+                          <input type="range" class="custom-range" min="0" max="5" step="0.5" id="customRange3">
+                        </div><br>
+                        <button class="btn btn-danger" type="button" onclick="this.form.submit()">Search</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+          <div class="col-sm-5 m-0 ml-2 mb-1">
+                <form method="POST" id="additionform">{% csrf_token %}
+                  <input type="hidden" name="reqo" value="{{reqobj.id}}">
+                {% for i in props %}
+                  <div class="row" style="background-color: rgb(228, 228, 228);">
+                    <div class="card-body list-group-item-action m-0 pl-0" id="lst_0001">
+            <div class="media position-relative m-0 p-0">
+                <img src="/media/{{i.image1}}" class="align-self-start mr-0 ml-2" alt="...">
+                <div class="media-body">
+                <div class="row ml-1">
+                  <div class="col">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="custom-control custom-checkbox float-right" style="position: relative; left:45%;">
+                                <input type="checkbox" class="custom-control-input" id="customCheck{{i.id}}" onchange="thisischangefunc(this)" name="{{i.id}}">
+                                <label class="custom-control-label" for="customCheck{{i.id}}" style="background-color: #dc3545;"></label>
+                              </div>
+                          <h5 class="mt-0 font-weight-bold">
+                              {{i.address}}
+                            <p class="card-text font-weight-normal font-size-16 mt-1">
+                              {{i.city}}
+                            </p>
+                          </h5>
+                          Status : <b>Active</b>
+                          <h5 class="card-title text-left font-weight-bold font-size-16 mt-4">${{i.price}} <br>                                      {{i.sqft}} sqft | {{i.beds}} beds | {{i.baths}} baths</p>
+                          </h5>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+                  </div>{% endfor %}</form>
+          </div>
+      </div>
+    </div>    
+  </div>
+</div>
+      
+      
+<div class="mx-auto w-100">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <h5 class="card-title  display-4 mx-auto font-weight-bolder text-danger" id="pageTitle">
+          {{reqobj.name}}
+        </h5>
+      </div>
+      <div class="form-group row mt-3">
+        <label for="inputEmail3" class="h1 col-sm-2 col-form-label">Tour Status</label>
+        <label for="inputEmail3" class="h1 col-sm-2 col-form-label font-weight-bolder">{{reqobj.status}}</label>
+        <div class="col-auto ml-auto">
+          <button type="submit" class="btn btn-danger" onclick="window.location.href='/request-tour/0/0/{{reqobj.id}}'">Edit Tour</button>
+        </div>
+        <div class="col-auto ">
+          <button type="submit" class="btn btn-danger" data-target="#cancelmodal" data-toggle="modal">Cancel Tour</button>
+        </div>
+      </div>
+      {% if reqobj.status == 'Scheduled' %}
+        <div class="form-group row">
+          <label for="inputEmail3" class="h1 col-sm-2 col-form-label">Schedule</label>
+          <label for="inputEmail3" class="h1 col-sm-4 col-form-label font-weight-bolder">{{reqobj.sel_date}}  {{reqobj.sel_time}}</label>
+        </div>
+      {% endif %}
+    </div>
+</div>
+
+    
+
+<div class="mx-auto w-100">
+  <div class="card border-0">
+    
+    <div class="card-body">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md col-lg">
+                    <p class="card-text text-dark">
+                        Preferred Date(s) and Time(s)
+                    </p>
+                    <div class="row" style="width:85%;">
+                        <div class="col-sm-3 m-0 p-0 pr-2">
+                            <div class="card m-0 p-0">
+                                <div class="card-body text-center">
+                                    <span
+                                        class="card-text text-center font-size-16">{{ reqobj.date1 }}
+                                        <i class="fas fa-calendar-alt fa-1x" id="date_0001"></i></span>
+                                    <br>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time1_date1 %}{{reqobj.time1_date1}}{% else %}<br>{% endif %}</span>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time2_date1 %}{{reqobj.time2_date1}}{% else %}<br>{% endif %}</span>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time3_date1 %}{{reqobj.time3_date1}}{% else %}<br>{% endif %}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 m-0 p-0 pr-2">
+                            <div class="card m-0 p-0">
+                                <div class="card-body text-center">
+                                    <span
+                                        class="card-text text-center font-size-16">{{ reqobj.date2 }}
+                                        <i class="fas fa-calendar-alt fa-1x" id="date_0001"></i></span>
+                                    <br>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time1_date2 %}{{reqobj.time1_date2}}{% else %}<br>{% endif %}</span>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time2_date2 %}{{reqobj.time2_date2}}{% else %}<br>{% endif %}</span>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time3_date2 %}{{reqobj.time3_date2}}{% else %}<br>{% endif %}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 m-0 p-0 pr-2">
+                            <div class="card m-0 p-0">
+                                <div class="card-body text-center">
+                                    <span
+                                        class="card-text text-center font-size-16">{{ reqobj.date3 }}
+                                        <i class="fas fa-calendar-alt fa-1x" id="date_0001"></i></span>
+                                    <br>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time1_date3 %}{{reqobj.time1_date3}}{% else %}<br>{% endif %}</span>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time2_date3 %}{{reqobj.time2_date3}}{% else %}<br>{% endif %}</span>
+                                    <i class="far fa-clock mt-2"></i>
+                                    <span>{% if reqobj.time3_date3 %}{{reqobj.time3_date3}}{% else %}<br>{% endif %}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="form-group row">
+                            <label for="inputNotes" class="col-sm-2 col-form-label pr-0 font-weight-bolder">Notes : </label>
+                            <div class="col-sm pl-0">
+                                <textarea cols="50" rows="3" id="notesTour" readonly style="resize: none;" class="bg-light pl-0 border border-dark form-control">{{reqobj.note}}</textarea>
+                                <br>
+                                {% if reqobj.status == 'Cancelled' %}
+                                <button class="btn btn-secondary btn-danger"
+                                    onclick="window.location.href='/reactive/{{reqobj.id}}'">ReOpen
+                                    Request</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-12  float-right col-lg-4">
+                    <p class="text text-right text-danger font-weight-bold mt-n2">
+                        Add More Properties to Tour <i class="fas fa-plus-circle fa-2x pl-1" name="add"
+                            id="add"  type="button" onclick="$('#searchmodal').modal('show');"></i>
+                    </p>
+                    <ul class="list-group float-right m-0 p-0 overflow-auto"
+                        style="width:550px; height: 370px;">
+                        {% for i in reqobj.relproperty.all %}
+                        <div class="media position-relative p-1 pt-2 pb-2 mb-2" id="list_0001">
+                            <img src="/media/{{i.image1}}" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <button type="button" class="close" data-target="#removeprop"
+                                    data-toggle="modal"
+                                    onclick="document.getElementById('removepropa').href = '/remove-from-tour/{{i.id}}/{{reqobj.id}}'">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5 class="mt-0 text-wrap">{{i.address}}<br><span
+                                        class="font-size-16 font-weight-normal">{{i.address}}<br><span
+                                            class="font-size-16 font-weight-normal">Status: </span><span
+                                            class="font-size-16 font-weight-bold">Active</span> </h5>
+                                <br>
+                                <h5 class="mt-0 text-wrap">${{i.price}}<br><span
+                                        class="font-size-16 font-weight-bold">{{i.sqft}} sqft | {{i.beds}} beds
+                                        | {{i.baths}} baths
+                                </h5>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+    
+<script>
+  {% if itissearched %}
+    setTimeout(
+      function (){
+        $('#searchmodal').modal('show');
+      },0
+    );
+    {% endif %}
+    function checkforsubmit(a){
+      if (a.value != ''){
+        a.form.submit();
+      }
+    }
+</script>
+    <script scr='{% static "functionality/js/page_54_google_slides.js" %}'></script>
+  {% endblock %}

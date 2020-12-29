@@ -1,0 +1,83 @@
+{% for k in j %}
+    <div class="card-body list-group-item-action mb-2">
+        <div class="media position-relative">
+            <img src="/media/{{k.relproperty.image1}}" class="mr-3" alt="..." height="200px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <h5 class="my-0">
+                                        {{k.relproperty.address}}
+                                    </h5>
+                                    <p class="card-text font-weight-normal mb-0">
+                                        {{k.relproperty.address}}
+                                    </p>
+                                    <span>Status : <b>Active</b></span>
+                                    <p class="font-weight-bold m-0">
+                                        Notes:
+                                    </p>
+                                    <textarea cols="40" rows="5" class="form-control bg-transparent border-0 p-0 resize-none" readonly >{{k.note}}</textarea>
+                                </div>
+                                <div class="col">
+                                    <h5 class="card-title text-right text-dark">
+                                        ${{k.relproperty.price}}
+                                    </h5>
+                                    <p class="card-text text-right font-weight-normal"  style="font-size: 14px;">
+                                        {{k.relproperty.sqft}} sqft| {{k.relproperty.beds}} beds | {{k.relproperty.baths}} baths
+                                    </p>
+                                    <form method="POST" action="{% url 'changestatus' %}" id="offerchange{{k.id}}">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <p class="text-right" {% if title == 'Fell Through' %} style="font-size: 14.9px;"{% endif %}>{{title}} Date</p>
+                                            </div>
+                                            <div class="col-5 ">
+                                                <input type="hidden" name="id" value="{{k.id}}" form="offerchange{{k.id}}">
+                                                    <input id="datepicker_{{k.id}}" form="offerchange{{k.id}}" name="date"
+                                                    autocomplete="off" class="border-0 bg-transparent text-right pr-4" required
+                                                    style="cursor:pointer;" data-date-format="mm/dd/yyyy"
+                                                    form="offerchange{{k.id}}" 
+                                                    {% if k.status == 'In Contract' %} value="{{k.contract_date}}"{% endif %}
+                                                    {% if k.status == 'Requested' %} value="{{k.requested_date}}"{% endif %}
+                                                    {% if k.status == 'Submitted' %} value="{{k.submitted_date}}"{% endif %}
+                                                    {% if k.status == 'Fell Through' %} value="{{k.fell_through_date}}"{% endif %}
+                                                    {% if k.status == 'Closed' %} value="{{k.closed_date}}"{% endif %} />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                                <div class="col">
+                                                    <p class="text-right" style="margin-left: 32px;" class="mt-1">Offer Status</p>
+                                                </div>
+                                                <div class="col-5">                            
+                                                    <select name="offer_status"  
+                                                    class="form-control  font-weight-bold  mt-n2 " 
+                                                    id="exampleFormControlSelect{{k.id}}" form="offerchange{{k.id}}">
+                                                    <option {% if k.status == 'In Contract' %}selected{% endif %}>In Contract </option>
+                                                    <option {% if k.status == 'Requested' %}selected{% endif %}>Requested</option>
+                                                    <option {% if k.status == 'Submitted' %}selected{% endif %}>Submitted</option>
+                                                    <option {% if k.status == 'Fell Through' %}selected{% endif %}>Fell Through</option>
+                                                    <option {% if k.status == 'Closed' %}selected{% endif %}>Closed</option>
+                                                    </select>
+                                                </div>
+                                        </div>
+                                        <div class="row" >
+                                            <div class="col">
+                                                <button class="btn btn-success p-2 font-weight-bolder w-50 float-right" form="offerchange{{k.id}}"
+                                                onclick="if(document.getElementById('exampleFormControlSelect{{k.id}}').value != 'Requested')
+                                                {this.form.submit();}" type="button">
+                                                Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>                            
+{% endfor %}

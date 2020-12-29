@@ -1,0 +1,326 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel='dns-prefetch' href='//use.fontawesome.com' />
+    <link rel='stylesheet' id='fontawesome-css' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css?ver=5.2.0'
+        type='text/css' media='all' />
+    <link rel="stylesheet" href='{% static "functionality/css/tr_style_sheet.css" %}'>
+    <title>UpClinch | Tour</title>
+<style>
+    ul#dynamic_field > li.list-group-item:hover{
+        cursor:pointer ;
+        background-color : white ;
+        color  :    #dc3545 ;
+    }   
+    #dynamic_field{
+        height: 300px;
+    }
+
+    div#outer{
+        width: 900px !important;
+    }
+
+</style>
+</head>
+<body>
+    {% include "mysite/header.html" %}
+    <input type="hidden" id="listid" value="{{lists.0.id}}">
+    {% if thisisuserpage %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item text-danger"><a href="{% url 'profile' userobj.username %}" class="text-danger">{{userobj.get_full_name}}: {{userobj.email}}'s Profile</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{userobj.get_full_name}}: {{userobj.email}}'s Tours</li>
+      </ol>
+  </nav>
+  {% endif %}
+
+    {% include "tr_modals.html" %}
+
+    <div class="mx-auto" id="outer">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <h1 class="card-title text-danger display-4 font-weight-bolder">Tours</h1>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="text text-right text-danger">
+                        <span class="col pr-0">New Tour </span> 
+                        <i class="fas fa-plus-circle fa-3x text-danger col mr-2 pl-1"  style="width:55px;top:8px;" name="add"{% if thisisuserpage %} onclick="window.location.href='/tour-for-buyer/{{userobj.username}}'" {% else %} id="add"{% endif %}></i>
+                    </p>
+                    <div class="overflow-auto">
+    
+    
+                        {% if agentcheck %}
+                        <!-- !  AGENT TOUR LIST -->
+                        <ul class="list-group" id="dynamic_field" >
+                            {% for i in objs %}
+                            <li class="list-group-item list-group-item-action p-0 m-0 {% if not i.name %}border border-danger bg-white{% endif %}" id="row_{{i.id}}"
+                                 data-relocate="{{i.id}}"
+                                >
+                                    <form method="POST" class="form-inline p-0 m-0 " name="form_1" >
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{i.id}}" name="id" />
+                                        
+                                            {% if i.name %}
+                                                <input type="text" style="cursor: pointer;width:19.5%;" value="{{i.name}}" name="listname"
+                                                    class="form-control p-0 m-0 border-0 pl-1 {%  if not i.statuscheck %}col-5 w-50 {% endif %}" readonly id="{{i.id}}"    
+                                                    autocomplete="off" maxlength="35"
+                                                    onchange="this.form.submit();" data-type="agent" 
+                                                    onclick="relocate({{i.id}});"
+                                                    
+                                                    />
+                                                    {% if i.statuscheck %}
+                                                    <i class="fas fa-calendar-alt fa-1x float-left mr-2 ml-2" id="tourRequestCalendar_{{ i.id }}"></i>
+                                                    <span id="tourRequestDate_{{ i.id }}" class="float-left" >{{i.sel_date}}, {{i.sel_time}}</span>
+                                                    {% endif %}
+                                                    <button type="button"{% if i.user == request.user %} {% if i.shared_with == None %} id="linkButton_{{i.id}}" onclick="checkfunc('{{i.id}}')"{% else %}
+                                                    data-toggle="modal" data-target="#cannotlink"{% endif %} {% else %}data-toggle="modal" data-target="#cannotlink"{% endif %}  
+                                                    class="btn btn-white border-0 bg-transparent text-dark pl-0 pr-0 ml-5">
+                                                        {% if i.linked_with == None %}
+                                                            <i class="fas fa-unlink" id="link_{{i.id}}" ></i>
+                                                        {% else %}
+                                                            <i class="fas fa-link" id="link_{{i.id}}"></i>
+                                                        {% endif %}
+                                                    </button>
+            
+                                                    <span class="text-left col-sm-3 ml-0" id="Name_{{i.id}}" onclick="relocate({{i.id}});">
+                                                        {{i.linked_with.get_full_name}}: {{i.linked_with.email}}
+                                                    </span>
+                                                            
+                                                
+        
+                                                    <select name="listname123" style="display: none;" onchange='changelink(this.value,"{{i.id}}")' form="form_{{i.id}}"
+                                                class="form-control p-0 m-0 border border-secondary pl-2 bg-transparent col-sm-3" id="BuyerName_{{i.id}}">
+                                                <option></option>
+                                                {% for j in buyerlist %}
+                                                    <option {% if j.user.username == i.linked_with.username %} selected {% endif %} value="{{j.user.username}}">{{j.user.get_full_name}}: {{j.user.email}}</option>
+                                                    {% endfor %}
+                                                </select>
+        
+                                            {% else %}
+                                                <input type="text" style="cursor: pointer;width: 87.6%;" placeholder="Enter new tour"
+                                                name="listname" class="form-control p-0 m-0 border-0 pl-1 text-dark" id="{{i.id}}"
+                                                autocomplete="off" data-type="agent">
+                                                <script>
+                                                    document.forms['form_1'].elements['listname'].focus();
+                                                </script>
+        
+                                            {% endif %}
+                                            {% if i.name %}
+                                            <span class="font-weight-bold mr-2 float-right" id="tourRequestStatus_{{ i.id }}" >{{i.status}}</span>
+                                            {% endif %}
+                                            <button type="button" id="editButton_{{i.id}}"
+                                        class="btn btn-white border-0 bg-transparent text-dark " {% if i.name %}  onclick="e({{i.id}})"{% else %}onclick="this.form.submit();"{% endif %}  data-status = "{{ i.status }}"  data-statuscheck="{{ i.statuscheck }}" {% if i.status == "Requested" or  i.status == "Scheduled" %} style="
+                                            padding-left: 16px;
+                                        " {% endif %}>
+                                            <i class="fas {% if not i.name %}fa-check fa-lg text-danger{% else %}fa-edit fa-lg{% endif %}"
+                                                id="edit_{{i.id}}" style="padding-right:0px; "></i>
+                                        </button>
+                                        <button type="button" id="copyButton_{{i.id}}" onclick="clonedlist('{{i.id}}')"
+                                            class="btn btn-white border-0 bg-transparent text-dark pl-0">
+                                            <i class="fas fa-copy fa-lg {% if not i.name %}text-danger{% endif %}"
+                                                id="copy_{{i.id}}" style="padding-right:0px; padding-left: 0px;"></i>
+                                        </button>
+                                        {% if not thisisuserpage %}
+                                        {% if i.status == 'In Creation' %}
+                                        <button type="button" class="btn btn-dark border-0 bg-transparent text-dark "
+                                        {% if request.user == i.user %}{% if i.shared_with == None %}
+                                                id="remove_{{i.id}}" 
+                                                {% else %}data-toggle="modal" data-target="#nodelete"{% endif %}{% else %}
+                                                data-target="#nodelete" data-toggle="modal"{% endif %}    
+                                        style="padding-right:1px;padding-left:0px; ">
+                                            <i class="far fa-times-circle fa-lg {% if not i.name %}text-danger{% endif %}"
+                                                id="circle_{{i.id}}"></i>
+                                        </button>
+                                        {% endif %}
+                                        {% endif %}
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <!-- !  BUYER TOUR LIST -->
+                        <ul class="list-group" id="dynamic_field">
+                            {% for i in objs %}
+                            <li class="list-group-item list-group-item-action p-0 m-0 {% if not i.name %}border border-danger bg-white{% endif %} " id="row{{i.id}}">
+                                <form method="POST" class="form-inline p-0 m-0" id="form{{i.id}}">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{i.id}}" name="id">
+                                    {% if i.name %}
+                                    <input type="text" style="cursor: pointer;width:auto;" value="{{i.name}}" name="listname"
+                                        class="form-control p-0 m-0 border-0 pl-1 bg-transparent" autocomplete="off" readonly id="{{i.id}}"
+                                        onclick="relocate({{i.id}})"  maxlength="35">
+                                    {% else %}
+                                    <input type="text" style="cursor: pointer;width:92%;" maxlength="35"
+                                        placeholder="Enter New Tour Name" name="listname" autocomplete="off"
+                                        class="form-control p-0 m-0 border-0 pl-1" id="{{i.id}}" >
+                                        <script>
+                                            document.forms['form{{i.id}}'].elements['listname'].focus();
+                                          </script>
+                                    {% endif %}
+                                    {% if i.name %}
+                                    {% if i.statuscheck %}
+                                    <i class="fas fa-calendar-alt fa-1x float-left mr-2 ml-2" id="tourRequestCalendar_{{ i.id }}"></i>
+                                    <span id="tourRequestDate_{{ i.id }}" class="float-left" >{{i.getdate}}, {{i.gettime}}</span>
+                                    {% else %}
+                                    <span class="float-left">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</span>
+                                    {% endif %}
+                                    <span class="font-weight-bold mr-3 float-right" id="tourRequestStatus_{{ i.id }}" style="position:relative;left:37%;">{{i.status}}</span>
+                                    {% endif %}
+                                    <button type="button" id="editButton_{{i.id}}" {% if i.name %}style="position:relative;left:37%;"{% endif %}
+                                        class="btn btn-white border-0 bg-transparent text-dark pr-0 pl-0 "{% if i.name %}onclick="e({{i.id}})"{% else %}onclick="this.form.submit();"{% endif %} data-status = "{{ i.status }}">
+                                        <i class="fas {% if not i.name %}fa-check fa-lg text-danger{% else %}fa-edit fa-lg{% endif %} "
+                                            id="edit_{{i.id}}" ></i>
+                                    </button>
+                                    {% if i.status == 'In Creation' %}
+                                    <button type="button" class="btn btn-dark border-0 bg-transparent text-dark pr-0" {% if i.name %}style="position:relative;left:37%;"{% endif %}
+                                        id="remove_{{i.id}}">
+                                        <i class="far fa-times-circle fa-lg {% if not i.name %}text-danger{% endif %}"
+                                            id="circle_{{i.id}}"></i>
+                                    </button>
+                                    {% endif %}
+    
+                                </form>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+      function changelink(a,b){
+    $('#link_'+b).removeClass('fa-unlink');
+    $('#link_'+b).addClass('fa-link');
+    $('#linksuccess').modal('show');
+    h = new XMLHttpRequest();
+    h.open('GET','/change-linked-tour/'+b+'/'+a);
+    h.send()
+  }
+
+  function clonedlist(a){
+    window.location.href = '/clone-tour/'+a;
+  }
+
+  function checkfunc(a){
+    var b = document.getElementById('BuyerName_'+a).value;
+    document.getElementById('BuyerName_'+a).value = '';
+    document.getElementById('Name_'+a).innerHTML = '';
+    if ($('#link_'+a).hasClass('fa-link') == true){
+        $('#link_'+a).removeClass('fa-link');
+        $('#link_'+a).addClass('fa-unlink');
+        $('#linkunlinkmodal').modal('show');
+        var h = new XMLHttpRequest();
+        h.open('GET','/remove-linked-tour/'+a);
+        h.send();
+    }
+  }
+</script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+
+    <script>
+$('#add').click(function(){
+            window.location.href = '{% url "create-tour" %}';
+        });
+
+    </script>
+
+        <script src='{% static "functionality/js/tr_jquery.js" %}'></script>
+
+    
+<script>
+    function e(a){
+    var b = document.getElementById(a).removeAttribute('readonly');
+    document.getElementById(a).focus();
+            console.info(($("#editButton_" + a + "").attr("data-statuscheck")));
+
+    var val = document.getElementById(a).value; //store the value of the element
+    document.getElementById(a).value = ''; //clear the value of the element
+    document.getElementById(a).value = val; //set that value back.
+        // $("#row" + a + "").css("border", "1px solid #dc3545");
+        $('#editButton_'+a).attr('onclick','this.form.submit();');
+        $("#row_" + a + "").addClass("border border-danger");
+        // $(""+a+"" ).addClass("text-dark");
+        $("#circle_" + a + "").css("color", "#dc3545");
+        $("#circle_" + a + "").addClass("text-danger");
+        $("#share_" + a + "").css("color", "#dc3545");
+        $("#share_" + a + "").addClass("text-danger");
+        $("#copy_" + a + "").css("color", "#dc3545");
+        $("#copy_" + a + "").addClass("text-danger");
+        $("#edit_" + a + "").css("color", "#dc3545");
+        $("#edit_" + a + "" ).removeClass("fa-edit");
+        $("#edit_" + a + "").addClass("fa-check text-danger");
+        $("#" + a+ "").css("background-color", "white");
+        $("#tourRequestStatus_" + a + "").css("display" , "none");
+        $("#tourRequestCalendar_" + a + "").css("display" , "none");
+        $("#tourRequestDate_" + a + "").css("display" , "none");
+        if($("#editButton_" + a + "").attr("data-status") == "Scheduled"){
+            $("#editButton_" + a + "").css("left" , "22%");    
+        }
+        else{
+            $("#editButton_" + a + "").css("left" , "0px");
+        }
+        
+        
+        $("#remove_" + a + "").css("left" , "0px");
+        // console.log($("#" + a + "").attr("data-type"));margin-left: 92px;
+        if($("#" + a + "").attr("data-type")){
+            $("#" + a + "").css("width", "43.4%");
+            $("#editButton_" + a + "").css("margin-left" , "92px");
+        }
+        else{
+            $("#" + a + "").css("width", "70%");    
+        }
+
+        if($("#editButton_" + a + "").attr("data-statuscheck") == "True"){
+            $("#editButton_" + a + "").css("margin-left" , "73px");   
+        }
+
+        // $("#" + a + "").css("width", "92%");
+        $("#" + a + "").hover( function()
+        {
+            $("#" + a+ "").css("background-color", "white");
+            
+        });                
+        $("#row_" + a + "").css("background-color", "white");
+
+        $("#row_" + a + "").hover( function()
+        {
+            $("#" + a+ "").css("background-color", "white");
+        });
+
+        // console.log("sdsdfd");
+}
+</script>
+
+
+
+</body>
+
+</html>

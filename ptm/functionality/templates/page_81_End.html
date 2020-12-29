@@ -1,0 +1,261 @@
+{% load static %}
+{% load convertToDate  %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel='dns-prefetch' href='//use.fontawesome.com' />
+    <link rel='stylesheet' id='fontawesome-css' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css?ver=5.2.0'
+        type='text/css' media='all' />
+        
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    
+    <link rel="stylesheet" href="{% static 'functionality/css/page_81_styling.css' %}">
+
+
+    <title>UpClinch</title>
+
+    <style>
+        input[data-type="datepicker"]{
+            padding-top:0px;
+            padding-bottom:16px;
+            width:70% !important;
+            padding-right: 0px;
+            padding-right: 0px !important;
+        }
+
+        span[class="input-group-append"]{
+            border:none;
+        }
+        span[class="input-group-append"] button[class="btn btn-outline-secondary border-left-0"],
+        span[class="input-group-append"] button[class="btn btn-outline-secondary border-left-0"]:active,
+        span[class="input-group-append"] button[class="btn btn-outline-secondary border-left-0"]:visited{
+            padding-top: 0px;
+            padding-bottom: 16px;
+            border:none;
+            background-color: transparent !important;
+        }
+        
+        i[class="gj-icon"],
+        i[class="gj-icon"]:active,
+        i[class="gj-icon"]:visited{
+            top:2px !important;
+            left:17px !important;
+            right: 0px !important;
+            color: black !important;
+        }
+        i[class="gj-icon"]:hover{
+            color: #dc3545 !important;
+        }
+
+
+        i[class="gj-icon chevron-left"],i[class="gj-icon chevron-right"]{
+            
+border: 1px solid white;
+border-radius: 50%;
+        }
+        
+        td[class="today gj-cursor-pointer"] div,
+        tr[role="week-days"],
+        div[role="navigator"],
+        i[class="gj-icon chevron-right"],
+        i[class="gj-icon chevron-right"]:active,
+        i[class="gj-icon chevron-right"]:visited,
+        i[class="gj-icon chevron-left"],
+        i[class="gj-icon chevron-left"]:active,
+        i[class="gj-icon chevron-left"]:visited{
+            color: white !important;
+        }
+
+        .gj-picker-bootstrap table tr td.selected.gj-cursor-pointer div {
+    color: #fff;
+    background-color: #dc3545 !important;
+    /* border-color: #122b40;
+    border-radius: 4px; */
+        }
+
+        div[role="navigator"]{
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+
+            td[class="today gj-cursor-pointer"] div,
+            td[class="today gj-cursor-pointer"] div,
+        tr[role="week-days"]{
+                color: #dc3545 !important;
+            }
+            td[class="current-month gj-cursor-pointer"] div:hover,
+            td[class="today gj-cursor-pointer"] div:hover,
+            td[class="other-month gj-cursor-pointer"] div:hover
+{
+background-color: #dc3545 !important;
+color: white !important;
+border-radius: 50% !important;
+
+}
+
+
+
+div[class="card-body list-group-item-action mb-2"]{
+    background-color: rgb(245, 243, 243);
+}
+
+div[class="card-body list-group-item-action mb-2"]:hover{
+    background-color: white;
+}
+
+select {
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+}
+
+.resize-none{
+    resize: none !important;
+}
+
+    </style>
+
+    
+</head>
+
+<body>
+
+    {% include "mysite/header.html" %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item text-danger"><a href="{% url 'offers' %}" class="text-danger">Offers</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+        </ol>
+    </nav>
+
+    <div class="mx-auto mt-0 w-100 px-5">
+        <div class="card mx-auto border-0 w-100" >
+
+            <div class="card-body">
+                
+
+                <h3 class="card-title text-center">Offers {{title}}</h3>
+
+
+                <div id="accordion">
+                    {% for i,j in data.items %}
+                    {% if j %}
+        
+                    <div class="card border-0">
+                        <div class="card-header bg-transparent mb-0 pb-0 pl-1 pr-0" id="item{{j.0.id}}">
+
+
+                            <h5 class="mb-0" onclick="$('#{{j.0.id}}').toggle();">
+                                <button class="btn btn-link text-dark pb-1" data-toggle="collapse" data-target="#{{j.0.id}}"
+                                    aria-expanded="true" aria-controls="{{j.0.id}}">
+                                    {{i}} &nbsp;<i class="fas fa-caret-right fa-1x text-secondary"  style="opacity: 0.5 !important;" id="collapse{{j.0.id}}"></i>
+                                </button>
+                            </h5>
+
+
+
+                        </div>
+                        
+        <div id="{{j.0.id}}" class="collapse" aria-labelledby="item{{j.0.id}}" data-parent="#accordion">
+            <div class="mx-auto pt-2 w-100 px-5">
+                    <div class="overflow-auto" style="height:300px;">
+                        <div class="card border-0 float-left w-100">
+                            {% include "page_81_end_display_cards.html" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+{% endfor %}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    function myfunc(a,b){
+        // console.log(a);
+        // var selectedCountry = $(a).children("option:selected").val();
+        // console.log(selectedCountry);
+        // selectedCountry +=    ' ';
+        // $(a).children("option:selected").val(selectedCountry);
+        // console.log()
+        window.location.href = '/changestatus/'+ a +'/'+b;
+    }
+
+    function newdatefunc(a,b){
+        console.log('a = '+a.value)
+        var h = new XMLHttpRequest();
+        h.open('GET','/changedate/'+a.value+'/'+b);
+        h.send();
+    }
+</script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+
+
+        <script>
+
+$(document).ready(function()
+{
+
+    {% for i,j in data.items %}
+    {% for k in j %}
+    $('#datepicker_{{k.id}}').datepicker({
+               uiLibrary: 'bootstrap4'
+            });
+    {% endfor %}
+    {% endfor %}
+
+    {% for i,j in data.items %}
+            $("#collapse_{{ i }}").css("transform", "rotate(90deg)");
+    {% endfor %}
+});
+
+            {% for i,j in data.items %}
+
+                $('#{{ i }}').on('show.bs.collapse', function () {
+                            $("#collapse_{{ i }}").css("transform", "rotate(0deg)");
+
+                        });
+                        $('#{{ i }}').on('hide.bs.collapse', function () {
+                            $("#collapse_{{ i }}").css("transform", "rotate(90deg)");
+
+                        });
+                    {% endfor %}
+
+
+                </script>
+
+    <script src="{% static 'functionality/js/page_81.js' %}"></script>
+
+
+</body>
+
+</html>

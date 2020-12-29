@@ -1,0 +1,190 @@
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
+
+::-webkit-scrollbar-button {
+    background: transparent;
+    display: none;
+}
+
+.text-red {
+    color: red;
+
+}
+
+.font-size-30 {
+    font-size: 30px;
+}
+
+.font-size-20 {
+    font-size: 20px;
+}
+
+.font-size-16 {
+    font-size: 16px;
+}
+
+#notesTour {
+    resize: none;
+}
+
+.form-control:focus,
+.form-control:active,
+.form-control-plaintext:focus,
+.form-control-plaintext:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: black;
+}
+
+.is-valid:focus,
+.is-valid:active,
+.form-control.is-valid:focus,
+.form-control.is-valid:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: black;
+}
+
+#tourNameInput {
+    display: none;
+}
+
+.close>span:hover {
+    color: red;
+}
+
+#datepicker_0001,
+#datepicker_0002,
+#datepicker_0003 {
+    display: none;
+    padding: 0px;
+    line-height: 0px;
+    height: calc(.75em + .75rem + 2px);
+
+}
+
+.input-group-append {
+    display: none;
+}
+
+div[role="navigator"] {
+    background-color: red;
+    color: white;
+}
+
+.gj-icon.chevron-left {
+    color: white;
+    border-radius: 5px;
+}
+
+select {
+    /* -webkit-appearance: none; */
+    /* -moz-appearance: none; */
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+#exampleFormControlSelect1 {
+    width: 80px;
+}
+
+div[class="media position-relative p-1 pt-2 pb-2 mb-2"]{
+    background-color: #F3F3F3;
+}
+
+div[class="media position-relative p-1 pt-2 pb-2 mb-2"]  img{
+    width: 100px;
+    height: 100px;
+
+}
+
+div[class="media position-relative p-1 pt-2 pb-2 mb-2"]:hover{
+    background-color: white;
+    color:#dc3545
+}
+
+div[class="media position-relative m-0 p-0"] img{
+    width:160px;
+   height:160px;
+}
+
+.modal-dialog{
+    max-width:1000px;
+}
+.custom-range::-webkit-slider-runnable-track {
+                        background-color: white;
+}
+.width-130{
+width:130px;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+color: #dc3545;
+border-color: white !important;
+background-color: #dc3545 !important;
+outline: none !important;
+    box-shadow: #dc3545 !important;
+    
+}
+
+.custom-control-input:checked~.custom-control-label::after {
+/* color: red; */
+border-color: white !important;
+background-color: #dc3545 !important;
+outline: none !important;
+    box-shadow: #dc3545 !important;
+    
+}
+
+.custom-control-input:checked~.custom-control-label:active {
+/* color: red; */
+border-color: white !important;
+background-color: #dc3545 !important;
+outline: none !important;
+    box-shadow: #dc3545 !important;
+    
+}
+
+.custom-control-input:checked~.custom-control-label:focus {
+/* color: red; */
+border-color: white !important;
+background-color: #dc3545 !important;
+outline: none !important;
+    box-shadow: #dc3545 !important;
+    
+}
+
+.custom-control-input:checked~.custom-control-label:visited {
+/* color: red; */
+border-color: white !important;
+background-color: #dc3545 !important;
+outline: none !important;
+    box-shadow: #dc3545 !important;
+    
+}

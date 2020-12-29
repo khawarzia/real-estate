@@ -1,0 +1,321 @@
+ {% load static %}
+{% for i in obj.relproperties.all %}
+    <div class="modal fade" id="newlist{{i.id}}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered mx-auto" role="document" >
+          <div class="modal-content mb-2" style="height:auto; width:500px;">
+            <div class="modal-header border-0 pb-0">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center pt-0 pb-0 mb-2"  >
+                <form id="agentnewform" action="{% url 'movelistpro' obj.id i.id %}" method="POST">{% csrf_token %}</form>
+                <form id="buyernewform" action="{% url 'movelistprobuyer' obj.id i.id %}" method="POST">{% csrf_token %}</form>
+              {% if agentcheck %}
+              <div class="container" id="exampleModalCenterInterstListContainer">
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group text-center">
+                      <label for="exampleInputInterestList text-center font-weight-bold">New Interest List</label>
+                      <input type="text" name="listname" class="form-control" id="exampleInputInterestList" value="" placeholder="Enter your list name" maxlength="35" form="agentnewform">
+                    </div>
+                  </div>
+                  <div class="col text-center">
+                    <label for="exampleInputInterestList text-center">Select Buyer</label>
+                    <div class="input-group">
+                      
+                      <form class="form-inline" id="searchform_1" style="width: 100%;">
+                        <select class="form-control" id="inlineFormInputGroupUsername" style="width: 100%;">
+                            <option hidden>Buyer</option>
+                            {% for j in buyerlist %}
+                              <option value="{{j.user.username}}">{{j.user.get_full_name}}: {{j.user.email}}</option>
+                            {% endfor %}
+                          </select>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-left: 115px;">
+                  <a href="#" class="alert-link" id="savePropertyModalLink" onclick="$('#agentnewform').submit();">Save Property to Interest List</a>
+                </div>
+                <div class="row">
+                  <a href="{% url 'manage-lists' %}" class="alert-link mx-auto">Manage Interest List</a>
+                </div>
+              </div>
+              {% else %}
+              <p class="font-size-24">New Interest List</p>
+              <input type="text" id="newlistnamebuyer" value="" name="listname" class="form-control" placeholder="Enter your list name" maxlength="35" form="buyernewform" ><br>
+              <h4 style="color: #dc3545;cursor: pointer;" onclick="$('#buyernewform').submit();"><strong>Save Property to Interest List</strong></h4>
+              <h4 style="color:#dc3545;cursor: pointer;" onclick="window.location.href = '/manage-lists'">Manage Interest Lists</h4>
+              {% endif %}
+              <input type="hidden" id="newlistproid">
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    <input type="hidden" id="move1" value="{{obj.id}}"><input type="hidden" id="move2" value="{{obj.relproperties.all.0.id}}">
+    <div class="modal fade" id="agentsel" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20">
+                    <h4  id="listnameinmodal" class="mb-0"></h4>
+                    <span>has been added to</span>
+                    <h4  id="listnameinmodal1"></h4>
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cloned" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20">
+                    <p>Are you sure you want to clone the list?</p>
+                    <button class="btn btn-secondary btn-danger p-2" onclick="window.location.href='/clone-list/{{obj.id}}'"
+                    style="border-radius: .25rem;">Clone</button>
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nodel" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20">
+                    The Property cannot be deleted as the list is created by a Buyer or has already been sent to the Buyer.
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="del1" value="{{obj.relproperties.all.0.id}}">
+    <div class="modal fade" id="del" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20 p-0">
+                    <span>Are you sure you want to remove</span>
+                    <h4  id="listnameinmodaldel" class="mb-0"></h4>
+                    <span>from</span>
+                    
+                    <h4  id="listnameinmodaldel1">{{obj.name}}</h4>
+                    <button class="btn btn-secondary btn-danger" style=" width:70px;height:35px;padding:3px;border-radius: 7%;" onclick="delfunc()">Remove</button><br>
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="agentshare" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20 p-0" id="agentsharebody">
+                    <h4 class="text-danger" id="listnameinmodaldel">{{obj.name}}</h4>
+                    <p>
+                        is ready to be shared with 
+                        {% if agentcheck %}
+                        Buyer
+                        {% else %}
+                        your UpClinch Agent
+                        {% endif %}
+                    </p>
+                    <button class="btn  btn-danger p-2 " style="border-radius: .25rem;"
+                    {% if agentcheck %}
+                    onclick="sharetobuyerfunc({{obj.id}})"
+                    {% else %}
+                    onclick="sharefunc()"
+                    {% endif %}>Share</button>
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notaction" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20 p-0">
+                    <p>Please add at least one property to this Interest List in order to share with UpClinch Agent.</p>
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notactiont" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20 p-0">
+                    <p>Please add at least one property to this Interest List in order to request a tour.</p>
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notactionrev" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20 p-0">
+                    {% if obj.sharepossible %}
+                    <p>Please rate all properties in this list in order to Complete Review.</p>
+                    {% else %}
+                    <p>Please add at least one property to this list and rate it to complete review.</p>
+                    {% endif %}
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="completerev" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20 p-1">
+                    <span>You have successfully completed the review of</span>
+                        <h4 class="text-danger text-underline mb-0 mt-0">{{obj.name}}</h4>
+                    
+                    <span>Your UpClinch agent has been notified. Thanks!</span>
+                    
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dellist" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0 pt-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20">
+                        <span>Are you sure you want to delete</span>
+                        <br>
+                        <span class="text-danger text-underline font-weight-normal font-size-26">
+                            {{obj.name}}
+                        </span>
+                        <span>from your Interest Lists?</span>
+                        
+                    <h6 class="mt-1 text-left">
+                        This action will delete the selected Interest List and all properties within it. If the Interest List was previously shared with your Agent, they will continue to have access to it from their dashboard after you delete it.
+                    </h6><br>
+                    <button class="btn btn-secondary btn-danger"  style="border-radius: 0%; width:60px;height:35px;padding:3px;" onclick="window.location.href='/delete-list/{{obj.id}}'">Delete</button>
+                </div>
+                <div class="modal-footer border-0 pb-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% for i,j in notes %}
+    <div class="modal fade" id="offer{{i.id}}" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered mx-auto" role="document">
+        <div class="modal-content" style="height: 220px;">
+          <div class="modal-header border-0 pb-0">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center pt-0 pb-0">
+            Make an Offer!<br>
+            <form method="POST" id="offerform{{i.id}}" action="{% url 'offer-from-list' obj.id %}">{% csrf_token %}
+              <input type="hidden" name="id" value="{{i.id}}">
+            <textarea name="offer" class="form-control" style="resize: none;"></textarea>
+            <br>
+            <button type="button" onclick="offersubmit('{{i.id}}')" class="btn btn-danger">Submit</button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="offermade{{i.id}}" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered mx-auto" role="document">
+        <div class="modal-content" style="height: 150px;">
+          <div class="modal-header border-0 pb-0">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center pt-0 pb-0">
+            Your offer for {{i.address}} has been recieved.<br>
+            An UpClinch Agent will be in touch with you shortly.
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
+    <script>
+        function offersubmit(a){
+          setTimeout(
+            function (){
+              document.getElementById('offerform'+a).submit();
+            },3000
+          );
+          $('#offermade'+a).appendTo('body').modal('show');
+        }
+      </script>

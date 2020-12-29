@@ -1,0 +1,65 @@
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.font-size-25 {
+  font-size: 25px;
+}
+
+#signinlink:link {
+  text-decoration: underline;
+}
+
+/* visited link */
+#signinlink:visited {
+  text-decoration: underline;
+}
+
+/* mouse over link */
+#signinlink:hover {
+  text-decoration: underline;
+}
+
+/* selected link */
+#signinlink:active {
+  text-decoration: underline;
+}
+
+.alert {
+  width: 250px;
+}
+
+.ml-20 {
+  margin-left: 235px;
+}
+
+.mr-9 {
+  margin-right: 120px;
+}
+
+.ml-60 {
+  margin-left: 60px;
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.ml-250 {
+  margin-left: 250px;
+}
+
+.form-control:focus,
+.form-control:active {
+  outline: none !important;
+  box-shadow: none !important;
+
+}
+

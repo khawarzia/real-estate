@@ -1,0 +1,130 @@
+<div class="modal fade" id="madelist" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+<div class="modal-dialog modal-dialog-centered" role="document" style="height:auto; width:500px;">
+  <div class="modal-content">
+    <div class="modal-header border-0 mb-0 pb-0">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body text-center pt-0">
+      <h4 class="modal-title mx-auto text-center font-weight-bold text-danger" id="exampleModalCenterTitle">Done!
+      </h4>
+      
+      <span class="text-dark font-weight-bold text-center mx-auto text-wrap mt-1" >
+        {{obj.address}} has been added to Interest List, <a href="#"
+          class="text-danger" id="newlistcreated"></a>
+          {% if agentcheck %}
+          for Buyer <a href="#" class="text-danger" id="newlistcreatedbuyer"></a>
+          {% endif %}
+      </span>
+      <br>
+      <a class="text-danger font-weight-bold" href="{% url 'manage-lists' %}">Manage Interest Lists</a>
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal fade" id="addedtotour" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header border-0 mb-0 pb-0">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body text-center pt-0">
+      <h4 class="modal-title mx-auto text-center font-weight-bold text-danger" id="exampleModalCenterTitle">Done!
+      </h4>
+      
+      {{obj.address}} has been added to the tour.<br>
+      <a href="{% url 'tour-requests' %}" class="text-danger font-weight-bold" style="color:#dc3545;">
+        Manage Tours
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="offer" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header border-0 pb-0 mb-0">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body text-center pt-0">
+  Make an Offer!<br>
+  <form method="POST" id="offerform">{% csrf_token %}
+    <input type="hidden" name="id" value="{{obj.id}}">
+  <textarea name="offer" class="form-control" style="resize: none;" ></textarea>
+  <br>
+  <button type="button" onclick="offersubmit('{{obj.id}}')" class="btn btn-danger br-0" data-target="#offermade" data-toggle="modal">Submit</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="offermade" tabindex="-1" role="dialog">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header border-0">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body text-center">
+  Your offer for {{obj.address}} has been recieved.<br>
+  An UpClinch Agent will be in touch with you shortly.
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="newlist" tabindex="-1" role="dialog"  >
+<div class="modal-dialog modal-dialog-centered" role="document" style="width:500px;height:auto;">
+<div class="modal-content">
+<div class="modal-header border-0 mb-0 pb-0">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body text-center">
+  {% if agentcheck %}
+    <div class="row">
+      <div class="col">
+        <div class="form-group text-center">
+          <label for="exampleInputInterestList text-center">New Interest List</label>
+          <input type="text" class="form-control" id="exampleInputInterestList" placeholder="Enter your list name" maxlength="35">
+        </div>
+      </div>
+      <div class="col text-center">
+        <label for="exampleInputInterestList text-center">Select Buyer</label>
+        <div class="input-group">
+          <select class="form-control" id="inlineFormInputGroupUsername" style="width: 100%;">
+            <option hidden>Buyer</option>
+            {% for j in listofbuyers %}
+              <option value="{{j.user.username}}">{{j.user.get_full_name}}: {{j.user.email}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <a href="#" class="alert-link text-danger" id="savePropertyModalLink" onclick="agentlistsave()" style="margin-left:140px;">Save Property to Interest List</a>
+    </div>
+    <div class="row">
+      <a href="{% url 'manage-lists' %}" class="alert-link mx-auto text-danger" style="margin-left:300px;">Manage Interest List</a>
+    </div>
+  {% else %}
+  <p  class="mb-0" style="font-size:24px;">New Interest List</p><br>
+  <input type="text" id="newlistnamebuyer" class="form-control" placeholder="Enter your list name" maxlength="35"><br>
+  <h4 style="color: #dc3545;cursor: pointer;" onclick="buyerlistfunc()"><strong>Save Property to Interest List</strong></h4>
+  <h4 style="color:#dc3545;cursor: pointer;" onclick="window.location.href = '/manage-lists'">Manage Interest Lists</h4>
+  {% endif %}
+  <input type="hidden" id="newlistproid">
+</div>
+</div>
+</div>
+</div>

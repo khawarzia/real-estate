@@ -1,0 +1,473 @@
+{% load static %}
+{% load staticfiles %}
+{% load humanize %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel='dns-prefetch' href='//use.fontawesome.com' />
+    <link rel='stylesheet' id='fontawesome-css' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css?ver=5.2.0'
+        type='text/css' media='all' />
+    <title>UpClinch</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+  integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+  crossorigin="anonymous"></script>
+<script src="https://cdn.linearicons.com/free/1.0.0/svgembedder.min.js"></script>
+  <script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover(
+            {
+                title: "Suleamn",
+                template: '<div class="popover" role="tooltip text-dark"><div class="arrow text-dark" ></div><p class="card-text p-1 bg-dark text-white mb-0" >Property List Review Legend</p><div class="row bg-dark m-0 p-2"><i  class="fas fa-smile fa-2x text-red ml-2 mr-3"></i><i  class="fas fa-frown fa-2x text-red ml-3 mr-3"></i> <i  class="fas fa-meh fa-2x text-red ml-3 mr-2"></i></div><div class="row bg-dark m-0"><span class="text-white ml-3 mr-3">Like</span><span class="text-white ml-3 mr-3">Dislike</span><span class="text-white ml-0 mr-3">NotSure</span></div></div>'
+            }
+        );
+    });
+</script>
+    <link rel="stylesheet" href='{% static "functionality\css\page_30_style_2.css" %}'>
+    <style>
+        .btn,.br-0{
+            border-radius: .25rem !important;
+            font-weight: bolder !important;
+        }
+    </style>
+</head>
+<body>
+    {% include "mysite/header.html" %}
+    {% include "page_30_end_modals.html" %}
+
+    <div class="max-auto w-100 px-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h1 class="card-title text-center text-danger display-4 font-weight-bolder" id="property_title">{{obj.name}}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {% if agentcheck %}
+                        <div class="card-title text-center">
+                            {% if obj.linked_with == None %}
+                                <div class="form-row justify-content-center">
+                                    <div class="col">
+                                        <span class="fas fa-unlink fa-lg col text-right mt-2 pt-1" id="linkunlink"></span>
+                                    </div>
+                                    <div class="col-8">
+                                        <select name="listname123" class="form-control form-inline" id="BuyerName_{{i.id}}"  onchange='changelink(this.value,"{{obj.id}}")'>
+                                            <option></option>
+                                            {% for j in buyerlist %}
+                                                <option {% if j.user.username == i.linked_with.username %} selected {% endif %} value="{{j.user.username}}">
+                                                    {{j.user.get_full_name}}: {{j.user.email}}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="fas fa-link fa-lg" id="linkunlink"
+                                    {% if obj.shared_with == None %} onclick="window.location.href = '/linkunlinklist/{{obj.id}}'" {% endif %} ></span>
+                                <strong class="text-danger">{{obj.linked_with.get_full_name}}: {{obj.linked_with.email}}</strong>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col ">
+                    <div class="text-danger text-right mb-2" id="proper_actions">
+                        <h5 class="card-title" id="actions">More Actions</h5>
+                        <i class="fas fa-circle"></i>
+                        <i class="fas fa-circle"></i>
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <div class="container float-right text-danger text-right pr-0" id="proper_actions_list" style="display: none;">
+                    <ul class="list-group float-right text-danger" id="proper_lists">
+                        <li class="list-group-item list-group-item-action text-danger pb-0 pr-0" id="AddProperties_0001" onclick="window.location.href = '/search'">Add Properties</li>
+                        <li class="list-group-item list-group-item-action text-danger pt-0 pb-0 pr-0" id="ShareWithAgent_0001" data-toggle="modal"{% if obj.sharepossible %} data-target="#agentshare" {% else %} data-target="#notaction" {% endif %}>Share With {% if agentcheck %}Buyer{% else %}Agent{% endif %}</li>
+                        {% if agentcheck %}
+                        <li class="list-group-item list-group-item-action text-danger pt-0 pb-0 pr-0" data-toggle="modal" data-target="#cloned">Clone</li>
+                        {% else %}
+                        <li class="list-group-item list-group-item-action text-danger pt-0 pb-0 pr-0" id="CompleteReview_0001" data-toggle="modal" {% if obj.comprev %} data-target="#completerev" {% else %} data-target="#notactionrev" {% endif %}>Complete Review</li>
+                        {% endif %}
+                        <li class="list-group-item list-group-item-action text-danger pt-0 pb-0 pr-0" id="RequestTour_0001" {% if obj.tourpossible %}onclick="window.location.href='/request-tour/{{obj.id}}/0/0'"{% else %}onclick="$('#notactiont').modal('show');"{% endif %}>{% if agentcheck %}Create{% else %}Request{% endif %} Tour</li>
+                        {% if agentcheck %}
+                        {% if request.user == obj.user %}{% if obj.shared_with == None %}
+                        <li class="list-group-item list-group-item-action text-danger pt-0 pb-0 pr-0" id="DeleteInterstList_0001" data-toggle="modal" data-target="#dellist">Delete Interest List</li>
+                        {% endif %}{% endif %}
+                        {% else %}
+                        <li class="list-group-item list-group-item-action text-danger pt-0 pb-0 pr-0" id="DeleteInterstList_0001" data-toggle="modal" data-target="#dellist">Delete Interest List</li>
+                        {% endif %}
+                    </ul>
+                    </div>
+                    <input type="hidden" id="objid" value="{{obj.id}}">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+        <div class="max-auto w-100 px-3">
+
+        
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col">
+                <div class="mx-auto"  >
+                    
+                    {% for i,j in notes %}
+                    <div class="overflow-auto float-right mb-2 mx-auto" >
+                        <div class="card border-0">
+                            <div class="card-body list-group-item-action w-100 mx-auto" id="lst_{{i.id}}">
+                                <div class="media position-relative">
+                                    <div class="container w2" id="imageContainer_{{i.id}}">
+                                        <img src="/media/{{i.image1}}" class="img-fluid mr-3" alt="...">
+                                        <button type="button" class="btn btn-dark" style="border-radius: 4px;" id="buttonImageA_{{i.id}}" onclick="window.location.href='/request-tour/0/{{i.id}}/0'">Tour</button>
+                                        <br>
+                                        {% if agentcheck == False %}
+                                        <button type="button" class="btn btn-dark btn-2" style="border-radius: 4px;" id="buttonImageB_{{i.id}}" data-target="#offer{{i.id}}" data-toggle="modal">Offer</button>
+                                        {% endif %}
+                                    </div>
+            
+                                    <!-- !  AGENT SPECIFIC TOUR DETAIL -->
+                                    {% if agentcheck %}
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="media-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h5 class="mt-0 mb-0">
+                                                                {{i.address}}
+                                                                <p class="card-text font-weight-normal mb-0" id="listHeading_{{i.id}}">
+                                                                    {{i.address}}
+                                                                </p>
+                                                                
+                                                            </h5>
+                                                            Status : <b>Active</b>
+                                                            <p class="font-weight-bold m-0">
+                                                                Notes:
+                                                            </p>
+                                                            <form id="propertyNotesForm_{{i.id}}" method="POST">{% csrf_token %}
+                                                                <input type="hidden" value="{{i.id}}" name="id">
+                                                                <textarea class="form-control m-0 overflow-auto bg-transparent border-0 text-wrap text-left pl-0" id="propertyNotes_{{i.id}}" style="height:80px;" readonly style="resize: none;" name="propertynote">{{j}}</textarea>
+                                                            </form>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <h5 class="card-title text-right">${{i.price|intcomma }} <p
+                                                                    class="card-text text-right font-weight-bold"
+                                                                    style="font-size: 14px;">{{i.sqft}} sqft | {{i.beds}} beds | {{i.baths}} baths</p>
+                                                            </h5>
+                                                            {% if obj.shared_with != none %}
+                                                {% for m,n in ratings %}
+                                                {% if m == i %}
+                                                <div class="row">
+                                                    <button type="button" class="btn btn-secondary border-0 bg-transparent ml-3" onclick="funcrate({{i.id}},0,{{obj.id}})">
+                                                        <i  class="fas fa-smile fa-2x"
+                                                            style="color: {% if n == 0 %}red{% else %}white{% endif %};background-color: black; border-radius: 1.25rem;"
+                                                            id="{{i.id}}happy"></i></button>
+                                                    &nbsp; &nbsp; 
+                                                    <button type="button" class="btn btn-secondary border-0 bg-transparent" onclick="funcrate({{i.id}},1,{{obj.id}})">
+                                                        <i  class="fas fa-frown fa-2x"
+                                                            style="color: {% if n == 1 %}red{% else %}white{% endif %};background-color: black; border-radius: 1.25rem;"
+                                                            id="{{i.id}}happy1"></i></button>
+                                                    &nbsp; &nbsp;
+                                                    <button type="button" class="btn btn-secondary border-0 bg-transparent" onclick="funcrate({{i.id}},2,{{obj.id}})">
+                                                        <i  class="fas fa-meh fa-2x"
+                                                            style="color: {% if n == 2 %}red{% else %}white{% endif %};background-color: black; border-radius: 1.25rem;"
+                                                            id="{{i.id}}happy2"></i></button>
+                                                    <br>
+                                                    <p class="text-capitalize"  data-toggle="popover"
+                                                    data-placement="bottom">Property Review Status</p>
+                                                    {% for k,l in tourdates %}
+                                                    {% if i in k.relproperty.all %}
+                                                    <p class="text-capitalize">Toured on {{l}}</p>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                                {% endif %}
+                                                <div class="row float-right mr-1" style="position: relative !important;bottom: -110px !important;">
+                                                    <button type="button" class="btn btn-white border-0 ml-3 mr-2"
+                                                        id="propertyNotesEdit_{{i.id}}"><i class="fas fa-edit fa-2x text-secondary"
+                                                            style="border-radius: 1.25rem;"></i></button>
+                                                    <button type="submit" class="btn btn-white border-0 ml-3 mr-3" style="display:none;"
+                                                        id="propertyNotesEditSubmit_{{i.id}}"><i class="fas fa-check-circle fa-2x text-secondary"
+                                                            style="border-radius: 1.25rem;"></i></button>
+                                                    <button type="button" class="btn btn-white border-0 dropdown-toggle mr-2"
+                                                        id="dropdownMenuButton_{{i.id}}" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <i class="fas fa-upload fa-2x text-secondary" style="border-radius: 1.25rem;"></i></button>
+                                                    <form id="propertyListDropDownForm_{{i.id}}" method="POST">
+                                                    <div class="dropdown-menu overflow-auto p-0" aria-labelledby="dropdownMenuButton_0001" style="height:100px;" id="dropdownMenu_{{i.id}}">
+                                                        <li class="list-group-item list-group-item-action" onclick="$('#newlist{{i.id}}').appendTo('body').modal('show')">New Interest List</li>
+                                                        {% if agentcheck %}
+                                                            {% for j in lists.0 %}
+                                                            {% if j.name and j != obj %}
+                                                            <li class="list-group-item list-group-item-action" name="drop"  id="dropDownList_0001_{{z.id}}" data-toggle="modal" data-target="#agentsel" onclick="document.getElementById('move1').value='{{j.id}}';document.getElementById('move2').value='{{i.id}}';newfunc1()">{{j.name}}</li>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                            {% for j,k in lists.1.items %}
+                                                            <li class="list-group-item list-group-item-action" name="drop" ><strong>{{j.username}}</strong></li>
+                                                            {% for z in k %}
+                                                            {% if z != obj %}
+                                                            <li class="list-group-item list-group-item-action" name="drop"  id="dropDownList_0001_{{z.id}}" data-toggle="modal" data-target="#agentsel" onclick="document.getElementById('move1').value='{{z.id}}';document.getElementById('move2').value='{{i.id}}';newfunc1()">{{z.name}}</li>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            {% for j in lists %}
+                                                            {% if j != obj %}
+                                                            <li class="list-group-item list-group-item-action" name="drop"  id="dropDownList_0001_{{j.id}}" data-toggle="modal" data-target="#agentsel" onclick="document.getElementById('move1').value='{{j.id}}';document.getElementById('move2').value='{{i.id}}';newfunc1()">{{j.name}}</li>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                </form>
+                                            <button type="button" data-toggle="modal"
+                                            {% if request.user == obj.user %}{% if obj.shared_with == None %}  
+                                             data-target="#del" {% else %} data-target="#nodel" {% endif %} {% else %} data-target="#nodel"{% endif %}
+                                             class="btn btn-white border-0" id="exampleModalCenterRemoveButton_0001_{{i.id}}" onclick="document.getElementById('del1').value='{{i.id}}'">
+                                                        <i class="fas fa-times-circle fa-2x text-secondary" style="border-radius: 1.25rem;"></i></button>
+                                                </div>
+            
+                                                        </div>
+                                                    </div>
+                                                    
+            
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    {% else %}
+            
+                                    <!-- !  BUYER SPECIFIC TOUR DETAIL -->
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="media-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h5 class="mt-0 mb-0" >
+                                                                {{i.address}}
+                                                                <p class="card-text font-weight-normal mb-0" id="listHeading_{{i.id}}">
+                                                                    {{i.address}}
+                                                                </p>
+                                                                
+                                                            </h5>
+                                                            Status : <b>Active</b>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <h5 class="card-title text-right">${{i.price|intcomma }} <p
+                                                                    class="card-text text-right font-weight-bold"
+                                                                    style="font-size: 14px;">{{i.sqft}} sqft | {{i.beds}} beds | {{i.baths}} baths</p>
+                                                            </h5>
+            
+                                                        </div>
+                                                    </div>
+                                                    <p class="font-weight-bold m-0">
+                                                        Notes:
+                                                    </p>
+                                                    <form id="propertyNotesForm_{{i.id}}" method="POST">{% csrf_token %}
+                                                        <input type="hidden" value="{{i.id}}" name="id">
+                                                        <textarea class="form-control m-0 overflow-auto bg-transparent border-0 text-wrap text-left pl-0" id="propertyNotes_{{i.id}}" style="height:80px;" readonly style="resize: none;" name="propertynote">{{j}}</textarea>
+                                                    </form>
+            
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                {% for m,n in ratings %}
+                                                {% if m == i %}
+                                                <div class="row">
+                                                    <button type="button" class="btn btn-secondary border-0 bg-transparent ml-3" onclick="funcrate({{i.id}},0,{{obj.id}})">
+                                                        <i  class="fas fa-smile fa-2x"
+                                                            style="color: {% if n == 0 %}red{% else %}white{% endif %};background-color: black; border-radius: 1.25rem;"
+                                                            id="{{i.id}}happy"></i></button>
+                                                    &nbsp; &nbsp; 
+                                                    <button type="button" class="btn btn-secondary border-0 bg-transparent" onclick="funcrate({{i.id}},1,{{obj.id}})">
+                                                        <i  class="fas fa-frown fa-2x"
+                                                            style="color: {% if n == 1 %}red{% else %}white{% endif %};background-color: black; border-radius: 1.25rem;"
+                                                            id="{{i.id}}happy1"></i></button>
+                                                    &nbsp; &nbsp;
+                                                    <button type="button" class="btn btn-secondary border-0 bg-transparent" onclick="funcrate({{i.id}},2,{{obj.id}})">
+                                                        <i  class="fas fa-meh fa-2x"
+                                                            style="color: {% if n == 2 %}red{% else %}white{% endif %};background-color: black; border-radius: 1.25rem;"
+                                                            id="{{i.id}}happy2"></i></button>
+                                                    <br>
+                                                    <p class="text-capitalize" style="text-decoration: underline dotted; "  data-toggle="popover"
+                                                    data-placement="bottom">Property Review Status</p>
+                                                    {% for k,l in tourdates %}
+                                                    {% if i in k.relproperty.all %}
+                                                    <p class="text-capitalize">Toured on {{l}}</p>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                                <div class="row" style="position: relative !important;bottom: -90px !important;">
+                                                    <button type="button" class="btn btn-white border-0 ml-3"
+                                                        id="propertyNotesEdit_{{i.id}}"><i class="fas fa-edit fa-2x text-secondary"
+                                                            style="border-radius: 1.25rem;"></i></button>
+                                                    <button type="submit" class="btn btn-white border-0 ml-3" style="display:none;"
+                                                        id="propertyNotesEditSubmit_{{i.id}}"><i class="fas fa-check-circle fa-2x text-secondary"
+                                                            style="border-radius: 1.25rem;"></i></button>
+                                                    <button type="button" class="btn btn-white border-0 dropdown-toggle"
+                                                        id="dropdownMenuButton_{{i.id}}" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <i class="fas fa-upload fa-2x text-secondary" style="border-radius: 1.25rem;"></i></button>
+                                                    <form id="propertyListDropDownForm_{{i.id}}" method="POST">
+                                                    <div class="dropdown-menu overflow-auto p-0" aria-labelledby="dropdownMenuButton_0001" style="height:100px;" id="dropdownMenu_{{i.id}}">
+                                                        <li class="list-group-item list-group-item-action" onclick="$('#newlist{{i.id}}').appendTo('body').modal('show')">New Interest List</li>
+                                                        {% for j in lists %}
+                                                        {% if j != obj %}
+                                                        <li class="list-group-item list-group-item-action" name="drop"  id="dropDownList_0001_{{j.id}}" data-toggle="modal" data-target="#agentsel" onclick="document.getElementById('move1').value='{{j.id}}';document.getElementById('move2').value='{{i.id}}';newfunc1()">{{j.name}}</li>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </form>
+                                            <button type="button" data-toggle="modal" data-target="#del" class="btn btn-white border-0" id="exampleModalCenterRemoveButton_0001_{{i.id}}" onclick="document.getElementById('del1').value='{{i.id}}'">
+                                                        <i class="fas fa-times-circle fa-2x text-secondary" style="border-radius: 1.25rem;"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+            
+                                </div>
+            
+                            </div>
+            
+                        </div>
+            
+                    </div>
+                    {% endfor %}
+                    <script>
+                        function movetoanother(a,b,c){
+                            setTimeout(function(){
+                                window.location.href = '/addfromlist/'+a+'/'+b+'/'+c;
+                            },2500);
+                        }
+            
+                        function changelink(a,b){
+                            setTimeout(
+                                function (){
+                                    location = location;
+                                },500
+                            );
+                            h = new XMLHttpRequest();
+                            h.open('GET','/change-linked/'+b+'/'+a);
+                            h.send();
+                        }
+            
+                        function sharetobuyerfunc(a){
+                            setTimeout(
+                                function (){
+                                    location = location;
+                                },500
+                            );
+                            h = new XMLHttpRequest();
+                            h.open('GET','/share-list-final/'+a);
+                            h.send()
+                        }
+                    </script>
+                    
+                    <div class="float-right p-0 m-0 mt-3">
+                        <div class="container p-0">
+                            <h5 class="card-title float-right" id="lstNotes_0001" >Interest List Notes</h5><br>
+                            <br>
+                            {% if not obj.note %}
+                        <button type="button" class="btn-white border-0 m-0 float-right bg-transparent"  onclick="show1edit()" style=""
+                                id="lsteditButtonEdit_0001"><i class="fas fa-edit fa-2x"></i></button>
+                        {% endif %}
+                            <form method="POST" action="{% url 'listnotechange' obj.id %}">{% csrf_token %}
+                                <textarea class="form-control p-0 bg-transparent text-wrap text-right border border-secondary border-0" id="lstNotesText_0001" rows="3" cols="100" readonly  name="listnote" style="height:auto;">{{obj.note}} </textarea>
+                                <button type="submit" class="btn-white border-0 m-0 float-right bg-transparent mr-2" style="display: none;"
+                                     id="lsteditButtonSubmit_0001" value="submit">
+                                    <i class="fas fa-check-circle fa-2x" ></i></button>
+                                    {% if obj.note %}
+                        <button type="button" class="btn-white border-0 m-0 float-right bg-transparent"  onclick="show1edit()" style=""
+                                id="lsteditButtonEdit_0001"><i class="fas fa-edit fa-2x"></i></button>
+                        {% endif %}                   
+                            </form>
+                            <script>
+                                function show1edit(){
+                                    document.getElementById('lsteditButtonEdit_0001').style = 'display:none;';
+                                    document.getElementById('lsteditButtonSubmit_0001').style = 'display:block;';
+                                    $('#lstNotesText_0001').removeAttr('readonly');
+                                    $('#lstNotesText_0001').removeClass('border-0');
+                                    $('#lstNotesText_0001').removeClass('text-right');
+                                    $('#lstNotesText_0001').addClass('text-left');
+                                }
+                            </script>
+            
+            
+                        </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+
+<script>
+
+function newfunc1(){
+setTimeout(
+    function(){
+        var a = document.getElementById('move1').value;
+        var b = document.getElementById('move2').value;
+        window.location.href = '/addfromlist/'+a+'/'+b+'/'+'{{obj.id}}';
+    },4000)
+}
+function delfunc(){
+var a = document.getElementById('del1').value;
+window.location.href = '/remove-from-list/{{obj.id}}/'+a;
+}
+function sharefunc(){
+    document.getElementById('agentsharebody').innerHTML = 'Your list has been shared with your agent!';
+    var b = new XMLHttpRequest();
+    b.open('GET','/share-list-buyer/{{obj.id}}');
+    b.send();
+}
+
+</script>
+
+    <script>
+
+function deletelist(){
+window.location.href = '/delete-list/'+{{obj.id}};
+}
+
+
+    </script>
+    
+    <script src='{% static "functionality/js/page_30_end.js" %}'></script>
+
+    <script>
+        $(document).ready(function(){
+          $('body').on('click', function (e) {
+          $('[data-toggle=popover]').each(function () {
+              // hide any open popovers when the anywhere else in the body is clicked
+              if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                  $(this).popover('hide');
+              }
+          });
+      });
+        }); 
+      </script>
+
+    
+</body>
+
+</html>

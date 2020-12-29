@@ -1,0 +1,198 @@
+/* ! Input */
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.form-control:focus,
+.form-control:active,
+.form-control-plaintext:focus,
+.form-control-plaintext:active {
+outline: none !important;
+box-shadow: none !important;
+border-color: black;
+}
+
+.form-control.is-valid {
+    border-color: black;
+    background-image: url('{% static "functionality/tick.png" %}');
+}
+
+textarea:focus,
+textarea:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+#notesTour {
+    resize: none;
+}
+
+
+
+.is-valid:focus,
+.is-valid:active,
+.form-control.is-valid:focus,
+.form-control.is-valid:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: black;
+}
+
+
+#tourNameInput {
+    display: none;
+}
+
+
+
+
+/* ! Link  */
+#signinlink:link {
+text-decoration: underline;
+}
+
+#signinlink:visited {
+    text-decoration: underline;
+}
+
+#signinlink:hover {
+    text-decoration: underline;
+}
+
+#signinlink:active {
+    text-decoration: underline;
+}
+
+/* ! Alert */
+
+.alert-250 {
+    width: 250px;
+}
+
+.alert-350{
+    width:350px;
+}
+
+
+/* ! Button */
+.btn:focus,
+.btn:active {
+outline: none !important;
+box-shadow: none !important;
+}
+
+
+.close>span:hover {
+    color: #dc3545;
+}
+
+
+/* ! Div  */
+div#registration[class="mx-auto mt-2"]{
+width:750px;
+}
+
+div#registration[class="mx-auto mt-2"] div[class="card border-0"]{
+width:43rem;
+}
+
+/* ! Popover */
+.bs-popover-right > .arrow::after, .bs-popover-auto[x-placement^="right"] > .arrow::after {
+    left: 1px;
+    border-width: 0.5rem 0.5rem 0.5rem 0;
+    border-right-color: black;
+}
+
+/* ! Radius */
+.br-0{
+    border-radius: 0px;  
+}
+
+/* ! Font-Size */
+
+
+.font-size-16{
+    font-size:16px;
+}
+
+.font-size-18{
+    font-size:18px;
+}
+
+.font-size-20{
+    font-size:20px;
+}
+
+.font-size-25 {
+    font-size: 25px;
+}   
+
+.font-size-30 {
+    font-size: 30px;
+}
+
+/* ! Margin */
+.ml-60{
+    margin-left: 60px;
+}
+
+.ml-180{
+    margin-left: 180px;
+}
+
+.ml-200{
+    margin-left: 200px !important;
+  }
+
+
+  
+.mr-120 {
+    margin-right: 120px;
+  }
+
+
+/* ! Scroll bar */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
+
+::-webkit-scrollbar-button {
+    background: transparent;
+    display: none;
+}
+
+/* ! text Color */
+.text-red {
+    color: red;
+}

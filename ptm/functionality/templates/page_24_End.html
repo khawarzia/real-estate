@@ -1,0 +1,520 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel='dns-prefetch' href='//use.fontawesome.com' />
+    <link rel='stylesheet' id='fontawesome-css' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css?ver=5.2.0'
+        type='text/css' media='all' />
+
+    <link rel="stylesheet" href='{% static "functionality/css/page_24_end_styling.css" %}'>
+
+      <style>
+
+.br-0{
+  border-radius: 0px;  
+}
+
+        .list-group-item:hover{
+          cursor: pointer;
+        }
+
+        #dynamic_field{
+    height: 300px;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    display: inline-block;
+    padding-right: .5rem;
+    color: #6c757d;
+    content: ">";
+}
+
+      </style>
+
+<style>
+  .btn,.br-0{
+      border-radius: .25rem !important;
+      font-weight: bolder !important;
+  }
+</style>
+
+    <title>UpClinch</title>
+</head>
+
+<body>
+  {% include "mysite/header.html" %}
+    <input type="hidden" id="listid" value="{{lists.0.id}}">
+    {% if thisisuserpage %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item text-danger"><a href="{% url 'profile' userobj.username %}" class="text-danger">{{ userobj.get_full_name }}: {{userobj.email}}'s Profile</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ userobj.get_full_name }}: {{userobj.email}}'s Interest Lists</li>
+      </ol>
+  </nav>
+  {% endif %}
+    <div class="mx-auto mt-5" id="outer">
+        <div class="modal fade" id="agentsel" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center text-wrap text-dark font-size-20" id="agentsharebody">
+                            <h4 class="texxt-danger text-underline" id="listname"></h4>
+                        <p>
+                             Your list is ready to be shared with your UpClinch Agent
+                        </p>
+                        <button class="btn btn-secondary btn-danger"
+                            onclick="sharefunc()">Share</button><br>
+                    </div>
+                    <div class="modal-footer border-0">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="buyersel" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content p-0 w-400 mx-auto">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center text-wrap text-dark font-size-20 p-0">
+                        <div id="buyerlistname" class="text-danger font-size-24 text-underline"></div>
+                        <div id="buyerbody"></div>
+                        <div id="buyername" class="text-danger font-size-24 text-underline"></div>
+                        <br>
+                        <button class="btn btn-secondary btn-danger" type="button" id="modalshareb" onclick="" style="border-radius: 0%; width:70px;height:35px;padding:3px;">Share</button>
+                    </div>
+                    <div class="modal-footer border-0">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="notbuyersel" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content p-0 w-400 mx-auto">
+                  <div class="modal-header border-0 pb-0">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body text-center text-wrap text-dark font-size-20">
+                    <div id="buyerbody1"></div>
+                    <div id="buyerlistnamenot" class="text-danger"></div>
+                      <div id="buyerbody2"></div>
+                  </div>
+                  <div class="modal-footer border-0 pb-0">
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+        <div class="modal fade" id="linkunlinkmodal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                  <div class="modal-header border-0">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body text-center text-wrap text-dark font-size-20">
+                      Buyer unlinked from Interest List.
+                  </div>
+                  <div class="modal-footer border-0">
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+      <div class="modal fade" id="linksuccess" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center text-wrap text-dark font-size-20">
+                    Buyer linked to Interest List.
+                </div>
+                <div class="modal-footer border-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="cannotlink" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <div class="modal-header border-0">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body text-center text-wrap text-dark font-size-20">
+                  Buyer cannot be unlinked as this Interest List was created by Buyer or has already been sent to the Buyer.
+              </div>
+              <div class="modal-footer border-0">
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+  <div class="modal fade" id="nodelete" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center text-wrap text-dark font-size-20">
+                Interest List cannot be deleted as it was created by a Buyer or has already been sent to the Buyer.
+            </div>
+            <div class="modal-footer border-0">
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Modal for unlink Buyer from the interest list (Successfully) Reference to Slide Number 77 -->
+  <div class="modal fade" id="exampleModalCenterBuyerSuccessfullyUnlinked" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center text-wrap font-size-20">
+          Buyer unlinked from the interest list.
+        </div>
+        <div class="modal-footer border-0">
+            
+          </div>
+      </div>
+    </div>
+  </div>
+        <!-- End of modal for unlink buyer from the interest list (Successfully) Reference to Slide Number 77 -->
+
+        <div class="modal fade" id="nosharepossible" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content p-0 w-400 mx-auto">
+                  <div class="modal-header border-0 pb-0 pt-1">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body text-center text-wrap text-dark font-size-20 p-0">
+                      <p>Please add at least one property to this Interest List in order to share with UpClinch Agent.</p>
+                  </div>
+                  <div class="modal-footer border-0 pb-0">
+                  </div>
+              </div>
+          </div>
+      </div>
+
+        <!-- Modal for unlink Buyer from the interest list (Unsuccessfully) Reference to Slide Number 78 -->
+  <div class="modal fade" id="exampleModalCenterBuyerUnsuccessfulllyUnlinked" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center text-wrap font-size-20">
+          Buyer cannot not be unlinked as this interest list was created by the Buyer or as already been sent to the Buyer.
+        </div>
+        <div class="modal-footer border-0">
+            
+          </div>
+      </div>
+    </div>
+  </div>
+        <!-- End of modal for unlink buyer from the interest list (Unuccessfully) Reference to Slide Number 78 -->
+
+
+        <!-- Modal Reference to Slide Number 86 -->
+        <div class="modal fade" id="exampleModalCenterBuyerReference86Slide" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content p-0 w-400 mx-auto">
+                <div class="modal-header border-0 pb-0">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body text-center text-wrap font-size-20">
+                  Please link a buyer with <a href="#" class="alert-link">List Network</a> to proceed
+                </div>
+                <div class="modal-footer border-0">
+                    
+                  </div>
+              </div>
+            </div>
+          </div>
+                <!-- End of modal Reference to Slide Number 86 -->
+        
+
+                <!-- Modal Reference to Slide Number 88 -->
+        <div class="modal fade" id="exampleModalCenterBuyerReference88Slide" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header border-0">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body text-center text-wrap font-size-20">
+                  <a href="#" class="alert-link">List Network</a> cannot be deleted as it was created  by a Buyer or has been already  been sent to a Buyer.
+                </div>
+                <div class="modal-footer border-0">
+                    
+                  </div>
+              </div>
+            </div>
+          </div>
+                <!-- End of modal Reference to Slide Number 88 -->
+        
+          
+          
+        <div class="card border-0 ">
+            <h4 class="card-title mx-auto text-danger">Interest Lists</h4>
+            <div class="card-body">
+                <p class="text text-right">
+                    <span class="col pr-0">New Interest List </span>
+                    <i class="fas fa-plus-circle fa-3x ml-2 col pl-0 mr-1" style="width:50px ;top:8px;" name="add"{% if thisisuserpage %} onclick="window.location.href='/list-for-buyer/{{userobj.username}}'"{% else %} id="add"{% endif %}></i>
+                </p>
+                <div class="overflow-auto">
+
+                    {% if agentcheck %}
+
+
+                    <ul class="list-group" id="dynamic_field" >
+                        {% for i in lists %}
+                        <li class="list-group-item list-group-item-action p-0 m-0 {% if not i.name %}border border-danger bg-white{% endif %}" id="row_{{i.id}}" ondblclick="relocate({{i.id}})">
+                            <form method="POST" class="form-inline p-0 m-0" name="form_{{i.id}}">{% csrf_token %}
+                                <input type="hidden" value="{{i.id}}" name="id">
+                                {% if i.name %}
+                                <input type="text" style="cursor: pointer;width:250px;" value="{{i.name}}" name="listname"
+                                    class="form-control p-0 m-0 border-0 pl-1" readonly id="{{i.id}}" onclick="relocate('{{i.id}}')"
+                                    autocomplete="off">
+                                    <button type="button"{% if i.user == request.user %} {% if i.shared_with == None %} id="linkButton_{{i.id}}" onclick="checkfunc('{{i.id}}')"{% else %}
+                                    data-toggle="modal" data-target="#cannotlink"{% endif %} {% else %}data-toggle="modal" data-target="#cannotlink"{% endif %}  
+                                    class="btn btn-white border-0 bg-transparent text-dark pl-0 pr-0 ml-5">
+                                    {% if i.linked_with == None %}
+                                    <i class="fas fa-unlink" id="link_{{i.id}}" ></i>
+                                    {% else %}
+                                    <i class="fas fa-link" id="link_{{i.id}}"></i>
+                                    {% endif %}
+                                </button>
+                               <span class="text-left col-sm-6 ml-0" id="Name_{{i.id}}">
+                                    {{i.linked_with.get_full_name}}: {{i.linked_with.email}}
+                                    </span>
+                                    <select name="listname123" style="display: none;" onchange='changelink(this.value,"{{i.id}}")' form="form_{{i.id}}"
+                                    class="form-control p-0 m-0 border border-secondary pl-2 bg-transparent col-sm-6" id="BuyerName_{{i.id}}">
+                                      <option></option>
+                                      {% for j in buyerlist %}
+                                        <option {% if j.user.username == i.linked_with.username %} selected {% endif %} value="{{j.user.username}}">{{j.user.get_full_name}}: {{j.user.email}}</option>
+                                          {% endfor %}
+                                    </select>
+
+                                {% else %}
+                                <input type="text" style="cursor: pointer;width: 84.3%;" placeholder="Enter the name new list" maxlength="35"
+                                    name="listname" class="form-control p-0 m-0 border-0 pl-1 text-dark" id="{{i.id}}"
+                                    autocomplete="off" 
+                                    >
+                                      <script>
+                                        document.forms['form_1'].elements['listname'].focus();
+                                      </script>
+
+                                {% endif %}
+                      
+
+                                <button type="button" id="editButton_{{i.id}}"
+                                class="btn btn-white border-0 bg-transparent text-dark " {% if i.name %}onclick="e({{i.id}})"{% else %}onclick="this.form.submit();"{% endif %}>
+                                <i class="fas {% if not i.name %}fa-check fa-lg text-danger{% else %}fa-edit fa-lg{% endif %}"
+                                    id="edit_{{i.id}}" style="float:right;padding-right:0px; "></i>
+                            </button>
+                            <button type="button" id="copyButton_{{i.id}}" onclick="clonedlist('{{i.id}}')"
+                                class="btn btn-white border-0 bg-transparent text-dark pl-0">
+                                <i class="fas fa-copy fa-lg {% if not i.name %}text-danger{% endif %}"
+                                    id="copy_{{i.id}}" style="float:right;padding-right:0px; padding-left: 0px;"></i>
+                            </button>
+                            <button type="button"
+                            {% if i.sharepossible %}
+                            onclick="sharewithbuyer('{{i.id}}')"
+                            {% else %}
+                            data-target="#nosharepossible" data-toggle="modal"
+                            {% endif %}
+                                class="btn btn-light border-0 bg-transparent text-dark"
+                                style="float:right;padding-right:0px; padding-left:0px;">
+                                <i class="fas fa-share-square fa-lg {% if not i.name %}text-danger{% endif %}"
+                                    id="share_{{i.id}}"></i>
+                            </button>
+                            {% if not thisisuserpage %}
+                            <button type="button" class="btn btn-dark border-0 bg-transparent text-dark"
+                            {% if request.user == i.user %}{% if i.shared_with == None %}
+                                    id="remove_{{i.id}}" 
+                                    {% else %}data-toggle="modal" data-target="#nodelete"{% endif %}{% else %}
+                                    data-target="#nodelete" data-toggle="modal"{% endif %}    
+                            style="float:right;padding-right:5px; ">
+                                <i class="far fa-times-circle fa-lg {% if not i.name %}text-danger{% endif %}"
+                                    id="circle_{{i.id}}"></i>
+                            </button>
+                            {% endif %}
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+
+
+                    {% else %}
+
+
+
+                    <ul class="list-group" id="dynamic_field">
+                        {% for i in lists %}
+                        <li class="list-group-item list-group-item-action p-0 m-0 {% if not i.name %}border border-danger bg-white{% endif %}"
+                            id="row{{i.id}}">
+                            <form method="POST" class="form-inline p-0 m-0" id="form{{i.id}}">{% csrf_token %}
+                                <input type="hidden" value="{{i.id}}" name="id">
+                                {% if i.name %}
+                                <input type="text" style="cursor: pointer;width:88%;" value="{{i.name}}" name="listname" maxlength="35"
+                                    class="form-control p-0 m-0 border-0 pl-1" autocomplete="off" readonly id="{{i.id}}"
+                                    onclick="relocate('{{i.id}}')">
+                                {% else %}
+                                <input type="text" style="cursor: pointer;width:88%;" maxlength="35"
+                                    placeholder="Enter the name new list" name="listname" autocomplete="off"
+                                    class="form-control p-0 m-0 border-0 pl-1" id="{{i.id}}">
+                                    <script>
+                                      document.forms['form{{i.id}}'].elements['listname'].focus();
+                                    </script>
+                                {% endif %}
+                                <button type="button" id="editButton_{{i.id}}" {% if i.name %}onclick="e({{i.id}})"{% else %}onclick="this.form.submit();"{% endif %}
+                                    class="btn btn-white border-0 bg-transparent text-dark">
+                                    <i class="fas {% if not i.name %}fa-check fa-lg text-danger{% else %}fa-edit fa-lg{% endif %}"
+                                        id="edit_{{i.id}}" style="float:right;padding-right:0px;"></i>
+                                </button>
+                                <button type="button" 
+                                {% if i.sharepossible %}
+                                data-target="#agentsel" 
+                                {% else %}
+                                data-target="#nosharepossible"
+                                {% endif %}
+                                data-toggle="modal"
+                                    onclick="document.getElementById('listid').value='{{i.id}}'"
+                                    class="btn btn-light border-0 bg-transparent text-dark"
+                                    style="float:right;padding-right:0px; padding-left:0px;">
+                                    <i class="fas fa-share-square fa-lg {% if not i.name %}text-danger{% endif %}"
+                                        id="share_{{i.id}}"></i>
+                                </button>
+                                <button type="button" class="btn btn-dark border-0 bg-transparent text-dark"
+                                    id="remove_{{i.id}}"
+                                    style="float:right;padding-right:0px; ">
+                                    <i class="far fa-times-circle fa-lg {% if not i.name %}text-danger{% endif %}"
+                                        id="circle_{{i.id}}"></i>
+                                </button>
+
+                            </form>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+      
+    </div>
+
+<script>
+  function changelink(a,b){
+    $('#link_'+b).removeClass('fa-unlink');
+    $('#link_'+b).addClass('fa-link');
+    $('#linksuccess').modal('show');
+    h = new XMLHttpRequest();
+    h.open('GET','/change-linked/'+b+'/'+a);
+    h.send()
+  }
+
+  function clonedlist(a){
+    window.location.href = '/clone-list/'+a;
+  }
+
+  function checkfunc(a){
+    var b = document.getElementById('BuyerName_'+a).value;
+    document.getElementById('BuyerName_'+a).value = '';
+    document.getElementById('Name_'+a).innerHTML = '';
+    if ($('#link_'+a).hasClass('fa-link') == true){
+      $('#link_'+a).removeClass('fa-link');
+      $('#link_'+a).addClass('fa-unlink');
+      $('#linkunlinkmodal').modal('show');
+      var h = new XMLHttpRequest();
+      h.open('GET','/remove-linked/'+a);
+      h.send();
+    }
+  }
+
+  function sharewithbuyer(a){
+    var b = document.getElementById('BuyerName_'+a).value;
+    if (b == ''){
+      document.getElementById('buyerbody1').innerHTML = 'Please link a buyer with ';
+      document.getElementById('buyerbody2').innerHTML = ' to proceed';
+      document.getElementById('buyerlistnamenot').innerHTML = document.getElementById(a).value;
+      $('#notbuyersel').modal('show');
+    }
+    else{
+      document.getElementById('buyerbody').innerHTML = ' is ready to be shared with ';
+      document.getElementById('buyername').innerHTML = document.getElementById('BuyerName_'+a).value;
+      document.getElementById('buyerlistname').innerHTML = document.getElementById(a).value;
+      document.getElementById('modalshareb').setAttribute("onclick","sharefuncfinal('"+a+"')");
+      $('#buyersel').modal('show');
+    }
+  }
+
+  function sharefuncfinal(a){
+    window.location.href = '/share-list-final/'+a;
+  }
+  
+</script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+
+    <script src='{% static "functionality/js/page_24_end.js" %}'></script>
+
+
+
+</body>
+
+</html>

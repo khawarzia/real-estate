@@ -1,0 +1,233 @@
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
+
+::-webkit-scrollbar-button {
+    background: transparent;
+    display: none;
+}
+
+.text-red {
+    color: red;
+
+}
+
+.font-size-30 {
+    font-size: 30px;
+}
+
+.font-size-20 {
+    font-size: 20px;
+}
+
+.font-size-16 {
+    font-size: 16px;
+}
+
+#notesTour {
+    resize: none;
+}
+
+.form-control:focus,
+.form-control:active,
+.form-control-plaintext:focus,
+.form-control-plaintext:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: black;
+}
+
+.is-valid:focus,
+.is-valid:active,
+.form-control.is-valid:focus,
+.form-control.is-valid:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: black;
+}
+
+#tourNameInput {
+    display: none;
+}
+
+.close>span:hover {
+    color: red;
+}
+
+#datepicker_0001,
+#datepicker_0002,
+#datepicker_0003 {
+    display: none;
+    padding: 0px;
+    line-height: 0px;
+    height: calc(.75em + .75rem + 2px);
+    z-index:0;
+    /* position: relative; */
+    /* top:-22px; */
+}
+
+#datepicker_0001{
+    display: block;
+    /* position: relative; */
+    top:0px;
+}
+
+#span_datepicker_0001{
+    position: relative;
+    top:-22px
+}
+
+#datepicker_0002{
+    display: block;
+    /* position: relative; */
+    top:0px;
+}
+
+#span_datepicker_0002{
+    position: relative;
+    top:-22px;
+    /* left:-10px; */
+}
+
+#datepicker_0003{
+    display: block;
+    /* position: relative; */
+    top:0px;
+}
+
+#span_datepicker_0003{
+    position: relative;
+    top:-22px;
+    /* left:-7px; */
+}
+
+.input-group-append {
+    display: none;
+}
+
+div[role="navigator"] {
+    background-color: #dc3545;
+    color: white;
+    
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+#exampleFormControlSelect1 {
+    width: 80px;
+}
+
+.font-size-14 {
+    font-size: 14px;
+}
+
+/* ********************************* */
+
+.gj-datepicker-bootstrap {
+    /* top:20px; */
+    z-index: 300;
+    left: 80px;
+    width: 40px;
+    /* height:40px; */
+    cursor: none;
+    opacity: 0;
+}
+
+#datepicker_0001_form {
+    display: block;
+    cursor: none;
+}
+
+#datepicker_0001 {
+
+    cursor: none;
+}
+
+input {
+    color: transparent;
+    /* text-shadow: 0 0 0 #2196f3; */
+
+}
+
+i[class="gj-icon chevron-left"]
+{
+
+border: 1px solid white;
+border-radius: 50% !important;
+
+}
+
+i[class="gj-icon chevron-right"]
+{
+
+border: 1px solid white;
+border-radius: 50%;
+}
+
+td[class="current-month gj-cursor-pointer"] div:hover
+{
+background-color: #dc3545 !important;
+color: white !important;
+border-radius: 50% !important;
+
+}
+/* 
+.gj-picker-bootstrap .selected {
+background-color: #dc3545 ;
+} */
+
+.gj-picker-bootstrap table tr td.selected.gj-cursor-pointer div {
+
+background-color: #dc3545;
+border-color: #dc3545;
+border-radius: 50%;
+}
+
+.form-control.is-valid {
+border-color: black;
+}
+
+#exampleFormControlSelect1_1, #exampleFormControlSelect1_2, #exampleFormControlSelect1_3,
+  #exampleFormControlSelect2_1,
+  #exampleFormControlSelect2_2,
+  #exampleFormControlSelect2_3,
+  #exampleFormControlSelect3_1,
+  #exampleFormControlSelect3_2,
+  #exampleFormControlSelect3_3{
+    position:relative;
+    width:95px !important;
+    top:-32px;
+    background-color: transparent;
+    left:10px;
+  }

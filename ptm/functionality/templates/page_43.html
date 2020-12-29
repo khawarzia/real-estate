@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel='dns-prefetch' href='//use.fontawesome.com' />
+    <link rel='stylesheet' id='fontawesome-css' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css?ver=5.2.0'
+        type='text/css' media='all' />
+        <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+        <title>UpClinch</title>
+
+    <style>
+
+ .btn-outline-secondary:hover, .btn-outline-secondary:active, .btn-outline-secondary:visited {
+    background-color: transparent !important;
+    
+}
+/*  */
+.input-group-append .btn-outline-secondary{
+    color: black;
+    background-color: transparent;
+    border: none;
+}
+
+/* 
+.input-group-append .btn-outline-secondary:focus{
+    color: red;
+    background-color: transparent;
+    border: none;
+} */
+
+
+.input-group-append{
+    border: none;
+}
+
+.gj-datepicker-bootstrap [role=right-icon] button {
+    border:none;
+}
+
+
+.gj-icon:hover, .gj-icon:active, .gj-icon:visited 
+{
+    color:#dc3545 !important;
+}
+
+.today   div{
+    background-color:#dc3545 !important ;
+    color: white !important;
+    border-radius: 50%;
+}
+
+
+/*  */
+
+        /* Scroll Bar */
+   /* width */
+   ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            background-color: #F5F5F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #000000;
+        }
+
+        ::-webkit-scrollbar-button {
+            background: transparent;
+            display: none;
+        }
+
+
+
+        /* End of Scroll Bar */
+    
+        .card-title{
+            color: #dc3545;
+        }
+      /* unvisited link */
+      .alert-link:link {
+  color: red;
+}
+
+/* visited link */
+.alert-link:visited {
+  color: red;
+}
+
+/* mouse over link */
+.alert-link:hover {
+  color: red;
+}
+
+/* selected link */
+.alert-link:active {
+  color: red;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+div[class="card-body list-group-item-action mb-1"]{
+    background-color: #F3F3F3;
+    
+}
+
+div[class="card-body list-group-item-action mb-1"]:hover{
+    background-color: #f3f3f3;
+
+}
+
+div[class="media position-relative"] img
+{
+    width: 200px;
+    height: 180px;
+}
+
+.input-group{
+    width:60%;
+    position: relative;
+    left:110px;
+    top:-23px;
+}
+
+.gj-icon{
+    color: black;
+}
+    </style>
+
+</head>
+
+<body>
+    {% include "mysite/header.html" %}
+    {% if thisisuserpage %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item text-danger"><a href="{% url 'profile' userobj.username %}" class="text-danger">{{userobj.get_full_name}}: {{userobj.email}}'s Profile</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{userobj.get_full_name}}: {{userobj.email}}'s Offers</li>
+      </ol>
+  </nav>
+  {% endif %}
+    <div class="mx-auto mt-4" style="width: 80%;">
+        <div class="card mx-auto border-0" style="width: 100%;">
+            
+            <div class="card-body">
+                
+                
+              <h3 class="card-title text-center text-danger">{% if thisisuserpage %}{{userobj.get_full_name}}: {{userobj.email}}'s{% else %}My{% endif %} Offers</h3>
+                <div id="accordion">
+                    <div class="card border-0">
+                    <div class="card-header bg-transparent pl-0 pb-0" id="headingOne">
+                        
+                        <h5 class="mb-0">
+                        <button style="color: gray;" class="btn btn-link pl-0 text-dark" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" 
+                        style="margin-left:-30px;"
+                        
+                        aria-controls="collapseOne">
+                            In Contract &nbsp;<i class="fas fa-caret-right fa-1x text-secondary" id="collapseOneCaret" style="opacity: 0.5;"></i>
+                        </button>
+                        </h5>
+                            
+                
+                    </div>
+                
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    {% if ic %}
+                    <div class="mx-auto mt-5" style="width: 80%;">
+                        <div class="overflow-auto" style="height:250px;">
+                            <div class="card border-0" style="width: auto;">
+                                {% for i in ic %}
+                                <div class="card-body list-group-item-action mb-1">
+                                    <div class="media position-relative">
+                                        <img src="/media/{{i.relproperty.image1}}" class="mr-3" alt="...">
+                                        <div class="container">
+                                            <div class="row">
+                                            <div class="col">
+                                                <div class="media-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                    <h5 class="mt-0">
+                                                        {{i.relproperty.address}}
+                                                    <p class="card-text font-weight-normal">
+                                                        {{i.relproperty.address}}
+                                                        <br>
+                                                        Status : <b>Active</b>
+                                                    </p>
+                                                    
+                                                    </h5>
+                                                </div><br>
+                                                <div class="col-6">
+                                                    <h5 class="card-title text-right text-dark">${{i.relproperty.price}}
+                                                         <p class="card-text text-right font-weight-bold" style="font-size: 14px;">{{i.relproperty.sqft}} sqft | {{i.relproperty.beds}} beds | {{i.relproperty.baths}} baths</p><p class="card-text text-right font-weight-normal" style="font-size: 14px;">
+                                                            
+                                                           <span class="text-right"> In Contract Date: {{i.contract_date}}</span>
+
+                                                            
+                                                
+                                                            
+                                                        </p></h5>
+                                                </div>
+                                                </div>
+                                                    <p class="font-weight-bold m-0">
+                                                    Notes:
+                                                </p>
+                                                    <p class="card-text m-0 overflow-auto" style="height:80px;">
+                                                    {{i.note}}
+                        
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+
+                                {% endfor %}
+                            </div>
+                
+                            
+                        </div>
+                    </div>
+                        {% else %}
+                        <div class="card-body">
+                            No Offers to display
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0">
+                    <div class="card-header bg-transparent pl-0 pb-0" id="headingTwo">
+                        <h5 class="mb-0">
+                        <button style="color: gray;" class="btn btn-link collapsed pl-0 text-dark" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                        
+                        
+                        aria-controls="collapseTwo">
+                            Submitted &nbsp;<i class="fas fa-caret-right fa-1x text-secondary" id="collapseTwoCaret" style="opacity: 0.5;"></i>
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        {% if sub %}
+                    
+                        <div class="mx-auto mt-5" style="width: 80%;">
+                            <div class="overflow-auto" style="height:250px;">
+                                <div class="card border-0" style="width: auto;">
+                                    {% for i in sub %}
+                                    <div class="card-body list-group-item-action mb-1">
+                                        <div class="media position-relative">
+                                            <img src="/media/{{i.relproperty.image1}}" class="mr-3" alt="...">
+                                            <div class="container">
+                                                <div class="row">
+                                                <div class="col">
+                                                    <div class="media-body">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                        <h5 class="mt-0">
+                                                            {{i.relproperty.address}}
+                                                        <p class="card-text font-weight-normal">
+                                                            {{i.relproperty.address}}
+                                                            <br>
+                                                            Status : <b>Active</b>
+                                                        </p>
+                                                        
+                                                        </h5>
+                                                    </div><br>
+                                                    <div class="col-6">
+                                                        <h5 class="card-title text-right text-dark">${{i.relproperty.price}}
+                                                             <p class="card-text text-right font-weight-bold" style="font-size: 14px;">{{i.relproperty.sqft}} sqft | {{i.relproperty.beds}} beds | {{i.relproperty.baths}} baths</p><p class="card-text text-right font-weight-normal" style="font-size: 14px;">
+                                                                
+                                                               <span class="text-right"> Submitted Date: {{i.submitted_date}}</span>
+
+                                                                
+                                                    
+                                                                
+                                                            </p></h5>
+                                                    </div>
+                                                    </div>
+                                                        <p class="font-weight-bold m-0">
+                                                        Notes:
+                                                    </p>
+                                                        <p class="card-text m-0 overflow-auto" style="height:80px;">
+                                                        {{i.note}}
+                            
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+
+                                    {% endfor %}
+                                </div>
+                    
+                                
+                            </div>
+                        </div>
+                        
+                        {% else %}
+                        <div class="card-body">
+                            No Offers to display
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="card border-0">
+                    <div class="card-header bg-transparent pl-0 pb-0" id="headingThree">
+                        <h5 class="mb-0">
+                        <button style="color: gray;" class="btn btn-link collapsed pl-0 text-dark" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Requested &nbsp;<i class="fas fa-caret-right fa-1x text-secondary" id="collapseThreeCaret" style="opacity: 0.5;"></i>  
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                        {% if req %}
+                        
+                        <div class="mx-auto mt-5" style="width: 80%;">
+                            <div class="overflow-auto" style="height:250px;">
+                                <div class="card border-0" style="width: auto;">
+                                    {% for i in req %}
+                                    <div class="card-body list-group-item-action mb-1">
+                                        <div class="media position-relative">
+                                            <img src="/media/{{i.relproperty.image1}}" class="mr-3" alt="...">
+                                            <div class="container">
+                                                <div class="row">
+                                                <div class="col">
+                                                    <div class="media-body">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                        <h5 class="mt-0">
+                                                            {{i.relproperty.address}}
+                                                        <p class="card-text font-weight-normal">
+                                                            {{i.relproperty.address}}
+                                                            <br>
+                                                            Status : <b>Active</b>
+                                                        </p>
+                                                        
+                                                        </h5>
+                                                    </div><br>
+                                                    <div class="col-6">
+                                                        <h5 class="card-title text-right text-dark">${{i.relproperty.price}}
+                                                             <p class="card-text text-right font-weight-bold" style="font-size: 14px;">{{i.relproperty.sqft}} sqft | {{i.relproperty.beds}} beds | {{i.relproperty.baths}} baths</p><p class="card-text text-right font-weight-normal" style="font-size: 14px;">
+                                                                
+                                                               <span class="text-right"> Requested Date: {{i.requested_date}}</span>
+
+                                                                
+                                                    
+                                                                
+                                                            </p></h5>
+                                                    </div>
+                                                    </div>
+                                                        <p class="font-weight-bold m-0">
+                                                        Notes:
+                                                    </p>
+                                                        <p class="card-text m-0 overflow-auto" style="height:80px;">
+                                                        {{i.note}}
+                            
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+
+                                    {% endfor %}
+                                </div>
+                    
+                                
+                            </div>
+                        </div>
+                            
+                            {% else %}
+                            <div class="card-body">
+                                No Offers to display
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    <div class="card border-0">
+                        <div class="card-header bg-transparent pl-0 pb-0" id="headingFour">
+                        <h5 class="mb-0">
+                            <button style="color: gray;" class="btn btn-link collapsed pl-0 text-dark" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Fell Through &nbsp;<i class="fas fa-caret-right fa-1x text-secondary" id="collapseFourCaret" style="opacity: 0.5;"></i>  
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                            {% if ft %}
+                            <div class="mx-auto mt-5" style="width: 80%;">
+                                <div class="overflow-auto" style="height:250px;">
+                                    <div class="card border-0" style="width: auto;">
+                                        {% for i in ft %}
+                                        <div class="card-body list-group-item-action mb-1">
+                                            <div class="media position-relative">
+                                                <img src="/media/{{i.relproperty.image1}}" class="mr-3" alt="...">
+                                                <div class="container">
+                                                    <div class="row">
+                                                    <div class="col">
+                                                        <div class="media-body">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                            <h5 class="mt-0">
+                                                                {{i.relproperty.address}}
+                                                            <p class="card-text font-weight-normal">
+                                                                {{i.relproperty.address}}
+                                                                <br>
+                                                                Status : <b>Active</b>
+                                                            </p>
+                                                            
+                                                            </h5>
+                                                        </div><br>
+                                                        <div class="col-6">
+                                                            <h5 class="card-title text-right text-dark">${{i.relproperty.price}}
+                                                                 <p class="card-text text-right font-weight-bold" style="font-size: 14px;">{{i.relproperty.sqft}} sqft | {{i.relproperty.beds}} beds | {{i.relproperty.baths}} baths</p><p class="card-text text-right font-weight-normal" style="font-size: 14px;">
+                                                                    
+                                                                   <span class="text-right"> Fell Through Date: {{i.fell_through_date}}</span>
+    
+                                                                    
+                                                        
+                                                                    
+                                                                </p></h5>
+                                                        </div>
+                                                        </div>
+                                                            <p class="font-weight-bold m-0">
+                                                            Notes:
+                                                        </p>
+                                                            <p class="card-text m-0 overflow-auto" style="height:80px;">
+                                                            {{i.note}}
+                                
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+    
+                                        {% endfor %}
+                                    </div>
+                        
+                                    
+                                </div>
+                            </div>
+                        {% else %}
+                        <div class="card-body">
+                            No Offers to display
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card border-0">
+                        <div class="card-header bg-transparent pl-0 pb-0" id="headingFive">
+                        <h5 class="mb-0">
+                            <button style="color: gray;" class="btn btn-link collapsed pl-0 text-dark" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Closed &nbsp;<i style="opacity: 0.5;" class="fas fa-caret-right fa-1x text-secondary" id="collapseFiveCaret"></i>  
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                            {% if cl %}
+                            <div class="mx-auto mt-5" style="width: 80%;">
+                                <div class="overflow-auto" style="height:250px;">
+                                    <div class="card border-0" style="width: auto;">
+                                        {% for i in cl %}
+                                        <div class="card-body list-group-item-action mb-1">
+                                            <div class="media position-relative">
+                                                <img src="/media/{{i.relproperty.image1}}" class="mr-3" alt="...">
+                                                <div class="container">
+                                                    <div class="row">
+                                                    <div class="col">
+                                                        <div class="media-body">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                            <h5 class="mt-0">
+                                                                {{i.relproperty.address}}
+                                                            <p class="card-text font-weight-normal">
+                                                                {{i.relproperty.address}}
+                                                                <br>
+                                                                Status : <b>Active</b>
+                                                            </p>
+                                                            
+                                                            </h5>
+                                                        </div><br>
+                                                        <div class="col-6">
+                                                            <h5 class="card-title text-right text-dark">${{i.relproperty.price}}
+                                                                 <p class="card-text text-right font-weight-bold" style="font-size: 14px;">{{i.relproperty.sqft}} sqft | {{i.relproperty.beds}} beds | {{i.relproperty.baths}} baths</p><p class="card-text text-right font-weight-normal" style="font-size: 14px;">
+                                                                    
+                                                                   <span class="text-right">Closed Date: {{i.closed_date}}</span>
+    
+                                                                    
+                                                        
+                                                                    
+                                                                </p></h5>
+                                                        </div>
+                                                        </div>
+                                                            <p class="font-weight-bold m-0">
+                                                            Notes:
+                                                        </p>
+                                                            <p class="card-text m-0 overflow-auto" style="height:80px;">
+                                                            {{i.note}}
+                                
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+    
+                                        {% endfor %}
+                                    </div>
+                        
+                                    
+                                </div>
+                            </div>
+                                {% else %}
+                                <div class="card-body">
+                                    No Offers to display
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                </div>
+            </div>
+          </div>
+      </div>
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+
+        <script>
+
+
+$(document).ready(function()
+  {
+    $("#collapseOneCaret").css("transform", "rotate(90deg)");
+    $("#collapseTwoCaret").css("transform", "rotate(90deg)");
+    $("#collapseThreeCaret").css("transform", "rotate(90deg)");
+    
+    $("#collapseFourCaret").css("transform", "rotate(90deg)");
+    $("#collapseFiveCaret").css("transform", "rotate(90deg)");
+  });
+
+
+            // Collapse one
+        $('#collapseOne').on('show.bs.collapse', function () {
+            $("#collapseOneCaret").css("transform", "rotate(0deg)");
+
+});
+$('#collapseOne').on('hide.bs.collapse', function () {
+            $("#collapseOneCaret").css("transform", "rotate(90deg)");
+
+});
+
+// Collapse Two
+$('#collapseTwo').on('show.bs.collapse', function () {
+            $("#collapseTwoCaret").css("transform", "rotate(0deg)");
+
+});
+$('#collapseTwo').on('hide.bs.collapse', function () {
+            $("#collapseTwoCaret").css("transform", "rotate(90deg)");
+
+});
+
+// Collapse Three
+$('#collapseThree').on('show.bs.collapse', function () {
+            $("#collapseThreeCaret").css("transform", "rotate(0deg)");
+
+});
+$('#collapseThree').on('hide.bs.collapse', function () {
+            $("#collapseThreeCaret").css("transform", "rotate(90deg)");
+
+});
+
+// Collapse Four
+$('#collapseFour').on('show.bs.collapse', function () {
+            $("#collapseFourCaret").css("transform", "rotate(0deg)");
+
+});
+$('#collapseFour').on('hide.bs.collapse', function () {
+            $("#collapseFourCaret").css("transform", "rotate(90deg)");
+
+});
+
+
+// Collapse Five
+$('#collapseFive').on('show.bs.collapse', function () {
+            $("#collapseFiveCaret").css("transform", "rotate(0deg)");
+
+});
+$('#collapseFive').on('hide.bs.collapse', function () {
+            $("#collapseFiveCaret").css("transform", "rotate(90deg)");
+
+});
+
+// $('.datepicker').datepicker();
+
+{% if sub %}
+
+    {% for i in sub %}
+
+$('#datepicker_{{ i.id }}').datepicker({
+                uiLibrary: 'bootstrap4'
+            });
+        {% endfor %}
+        {% endif %}
+
+        </script>
+
+</body>
+
+</html>

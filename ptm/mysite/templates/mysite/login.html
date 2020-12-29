@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<style>
+  .btn,.br-0{
+      border-radius: .25rem !important;
+      font-weight: bolder !important;
+  }
+</style>
+
+<div class="mx-auto" style="width: 800px;">
+  <div class="card border-0" style="width: 45rem;">
+    <div class="card-body ">
+      <h5 class="card-title text-center text-danger font-weight-bold font-size-25 ml-60">Sign In</h5>
+      <p class="card-text text-center ml-60">Don't have an account? <a href="{% url 'register' %}{% if a %}?type={{a}}&id={{b}}{% endif %}"
+          class="card-link text-danger text-decoration font-weight-bold" id="signinlink">Sign Up</a></p>
+      {% if messages %}
+        {% for message in messages %}
+          {% if message.tags == "warning" %}
+            <div class="alert alert-250 alert-warning alert-dismissible fade show  w-50  ml-200" role="alert">
+              {{ message|escape }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      <form action="{% url 'login' %}" method="POST">
+        <input type="hidden" name="type" value="{{a}}">
+        <input type="hidden" name="id" value="{{b}}">
+        {% csrf_token %}
+        <div class="form-group row">
+          <label for="exampleInputEmail1" class="col-sm-3 col-form-label pr-0 text-right">Email</label>
+          <div class="col-sm-7">
+            <input type="email" class="form-control" autocomplete="off" name="username" id="exampleInputEmail1"
+              aria-describedby="emailHelp">
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <label for="exampleInputPassword1" class="col-sm-3 col-form-label pr-0 text-right">Password</label>
+          <div class="col-sm-7">
+            <input type="password" name="password" autocomplete="off" class="form-control" id="exampleInputPassword1">
+          </div>
+
+        </div>
+        <div class="form-group mx-auto text-right mr-5">
+          <p class="card-text text-right mr-120"><a href="{% url 'password_reset' %}"
+              class="card-link text-danger text-decoration font-weight-bold" id="signinlink">Forgot Password ?</a></p>
+        </div>
+        <div class="form-group mx-auto text-center">
+          <button type="submit" class="btn btn-danger text-center bg-danger font-weight-bolder br-0 ml-5">Login</button>
+        </div>
+        <div class="form-group row mx-auto text-center">
+          <p class="card-text text-center mx-auto">By Signing up you agree to our <a href="#"
+              class="card-link text-danger text-decoration font-weight-bold" id="signinlink">Terms of Service</a> and <a href="#" class="card-link text-danger text-decoration font-weight-bold ml-0" id="signinlink">Privacy Policy</a>
+            </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

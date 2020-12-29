@@ -1,0 +1,22 @@
+<nav class="navbar">
+  <div class="float-right">
+    <a href="{% url 'home' %}" class="alert-link text-danger">Home</a>&nbsp;&nbsp;
+    <a href="{% url 'search' %}" class="alert-link text-danger">Search</a> &nbsp;&nbsp;
+          <a href="{% url 'manage-lists' %}" class="alert-link text-danger">Interest Lists</a> &nbsp;&nbsp; 
+          <a href="{% url 'tour-requests' %}"  class="alert-link text-danger">Tours</a>   &nbsp;&nbsp;
+          <a href="{% url 'offers' %}" class="alert-link text-danger">Offers</a> &nbsp;&nbsp;
+          {% if agentcheck %}
+          <a href="{% url 'listofbuyers' %}" class="alert-link text-danger">Buyers</a>&nbsp;&nbsp;
+          {% if mastercheck %}
+          <a href="{% url 'agent-buyer-relation' %}" class="alert-link text-danger">Agent Link</a>&nbsp;&nbsp;
+          {% endif %}
+          {% endif %}
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'pro' %}" class="alert-link text-danger">My Profile</a>&nbsp;&nbsp;
+          <a href="{% url 'logout' %}" class="alert-link text-danger">Logout</a>&nbsp;&nbsp;
+          {% else %}
+          <a href="{% url 'login' %}" class="alert-link text-danger">Login</a>&nbsp;&nbsp;
+          <a href="{% url 'register' %}" class="alert-link text-danger">Sign Up</a>
+          {% endif %}
+        </div>
+    </nav>

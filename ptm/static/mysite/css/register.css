@@ -1,0 +1,93 @@
+        input::-webkit-inner-spin-button,
+        input::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+        }
+
+        input[type="number"] {
+                -moz-appearance: textfield;
+        }
+
+        .font-size-25 {
+                font-size: 25px;
+        }       
+
+        #signinlink:link {
+                text-decoration: underline;
+        }
+
+        /* visited link */
+        #signinlink:visited {
+                text-decoration: underline;
+        }
+
+        /* mouse over link */
+        #signinlink:hover {
+                text-decoration: underline;
+        }
+
+        /* selected link */
+        #signinlink:active {
+                text-decoration: underline;
+        }
+
+        .alert{
+                width:350px;
+        }
+
+        .ml-20{
+                margin-left:235px;
+        }       
+
+        .font-size-16{
+                font-size:16px;
+        }
+
+        .font-size-18{
+                font-size:18px;
+        }
+
+        .font-size-20{
+                font-size:20px;
+        }
+
+.form-control:focus,
+.form-control:active {
+  outline: none !important;
+  box-shadow: none !important;
+
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+div[class="mx-auto mt-2"]{
+    width:750px;
+}
+
+div[class="mx-auto mt-2"] div[class="card border-0"]{
+    width:43rem;
+
+}
+
+.ml-60{
+    margin-left: 60px;
+}
+
+.ml-180{
+    margin-left: 180px;
+}
+
+
+.bs-popover-right > .arrow::after, .bs-popover-auto[x-placement^="right"] > .arrow::after {
+        left: 1px;
+        border-width: 0.5rem 0.5rem 0.5rem 0;
+        border-right-color: black;
+    }
+    
+    
+    .br-0{
+      border-radius: 0px;  
+    }

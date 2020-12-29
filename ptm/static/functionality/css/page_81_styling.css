@@ -1,0 +1,110 @@
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
+
+::-webkit-scrollbar-button {
+    background: transparent;
+    display: none;
+}
+
+#property_title,
+#proper_actions {
+    color: #dc3545;
+}
+
+.btn:focus,
+.btn:active,
+select:focus,
+select:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn {
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    /* border-radius: 1.25rem; */
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">";
+}
+
+.card-title {
+    color: #dc3545;
+}
+
+/* unvisited link */
+.alert-link:link {
+    color: #dc3545;
+}
+
+/* visited link */
+.alert-link:visited {
+    color: #dc3545;
+}
+
+/* mouse over link */
+.alert-link:hover {
+    color: #dc3545;
+}
+
+/* selected link */
+.alert-link:active {
+    color: #dc3545;
+}
+
+div[class="card-body list-group-item-action mb-2"]{
+    background-color: rgb(245, 243, 243);
+}
+
+div[class="card-body list-group-item-action mb-2"]:hover{
+    background-color: white;
+}
+
+.w-140{
+    width: 140px !important;
+}
+select{
+    -webkit-appearance:  none;
+  -moz-appearance: none;
+
+}
+/*
+caret{
+    color: blue !important;
+} */
+/* 
+select:-webkit{
+    color: blue !important;
+} */
+/* 
+::-webkit-appearance{
+    font-size: 50px !important;
+} */

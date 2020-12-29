@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-transparent pt-0">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+    <li class="nav-item font-weight-bolder ">
+        <a class="nav-link text-danger font-weight-bolder " href="{% url 'home' %}">Home</a>
+        </li>
+    <li class="nav-item font-weight-bolder  ">
+        <a class="nav-link text-danger font-weight-bolder" href="{% url 'search' %}">Search</a>
+    </li>
+    <li class="nav-item font-weight-bolder  ">
+        <a class="nav-link text-danger font-weight-bolder" href="{% url 'manage-lists' %}">Interest List</a>
+    </li>
+    <li class="nav-item font-weight-bolder  ">
+        <a class="nav-link text-danger font-weight-bolder" href="{% url 'tour-requests' %}">Tours</a>
+        </li>
+        <li class="nav-item font-weight-bolder  ">
+        <a class="nav-link text-danger font-weight-bolder" href="{% url 'offers' %}">Offers</a>
+        </li>   
+        {% if agentcheck %}
+        <li class="nav-item font-weight-bolder  ">
+            <a class="nav-link text-danger font-weight-bolder" href="{% url 'listofbuyers' %}">Buyers</a>
+        </li>
+        {% if mastercheck %}
+        <li class="nav-item font-weight-bolder  ">
+            <a class="nav-link text-danger font-weight-bolder" href="{% url 'listofbuyers' %}">Buyers</a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <li class="nav-item font-weight-bolder  ">
+            <a class="nav-link text-danger font-weight-bolder" href="{% url 'pro' %}">My Profile</a>
+        </li>
+        <li class="nav-item font-weight-bolder  ">
+            <a class="nav-link text-danger font-weight-bolder" href="{% url 'logout' %}">Logout</a>
+        </li>
+        {% else %}
+            <li class="nav-item font-weight-bolder  ">
+                <a class="nav-link text-danger font-weight-bolder" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item font-weight-bolder  ">
+                <a class="nav-link text-danger font-weight-bolder" href="{% url 'register' %}">Sign Up</a>
+            </li>
+        {% endif %}
+    </ul>
+    
+    </div>
+    </nav>

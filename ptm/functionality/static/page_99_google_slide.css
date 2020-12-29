@@ -1,0 +1,238 @@
+
+
+    /* width */
+    ::-webkit-scrollbar {
+                width: 10px;
+            }
+    
+            /* Track */
+            ::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+    
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                background: #888;
+            }
+    
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+    
+            ::-webkit-scrollbar {
+                width: 6px;
+                background-color: #F5F5F5;
+            }
+    
+            ::-webkit-scrollbar-thumb {
+                background-color: #000000;
+            }
+    
+            ::-webkit-scrollbar-button {
+                background: transparent;
+                display: none;
+            }
+    
+            .font-size-30 {
+                font-size: 30px;
+            }
+    
+            .font-size-20 {
+                font-size: 20px;
+            }
+    
+            .font-size-16 {
+                font-size: 16px;
+            }
+    
+            #notesTour {
+                resize: none;
+            }
+    
+            .form-control:focus,
+            .form-control:active,
+            .form-control-plaintext:focus,
+            .form-control-plaintext:active,
+            form-control-inline:focus,
+            form-control-inline:active {
+                outline: none !important;
+                box-shadow: none !important;
+                border-color: black;
+            }
+    
+            .is-valid:focus,
+            .is-valid:active,
+            .form-control.is-valid:focus,
+            .form-control.is-valid:active {
+                outline: none !important;
+                box-shadow: none !important;
+                border-color: black;
+            }
+    
+            #tourNameInput {
+                display: none;
+            }
+    
+            .close>span:hover {
+                color: red;
+            }
+    
+            #datepicker_0001,
+            #datepicker_0002,
+            #datepicker_0003 {
+                display: none;
+                padding: 0px;
+                line-height: 0px;
+                height: calc(.75em + .75rem + 2px);
+    
+            }
+    
+            .input-group-append {
+                display: none;
+            }
+    
+            div[role="navigator"] {
+                background-color: #dc3545;
+                color: white;
+                
+            }
+    
+            select {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                text-indent: 1px;
+                text-overflow: '';
+            }
+    
+            #exampleFormControlSelect1 {
+                width: 80px;
+            }
+    
+            .font-size-14 {
+                font-size: 14px;
+            }
+    
+            /* ********************************* */
+            
+            .gj-datepicker-bootstrap {
+                /* top:20px; */
+                z-index: 300;
+                /* left: 80px; */
+                width: 40px;
+                /* height:40px; */
+                cursor: none;
+                opacity: 0;
+            }
+    
+            #datepicker_0001_form {
+                display: block;
+                cursor: none;
+            }
+    
+            #datepicker_0001 {
+    
+                cursor: none;
+            }
+    
+            input {
+                color: transparent;
+                /* text-shadow: 0 0 0 #2196f3; */
+    
+            }
+      
+    i[class="gj-icon chevron-left"]
+    {
+    
+        border: 1px solid white;
+        border-radius: 50% !important;
+        
+    }
+    
+    i[class="gj-icon chevron-right"]
+    {
+    
+        border: 1px solid white;
+        border-radius: 50%;
+    }
+    
+    td[class="current-month gj-cursor-pointer"] div:hover
+    {
+        background-color: #dc3545 !important;
+        color: white !important;
+        border-radius: 50% !important;
+    
+    }
+    /* 
+    .gj-picker-bootstrap .selected {
+       background-color: #dc3545 ;
+    } */
+    
+    .gj-picker-bootstrap table tr td.selected.gj-cursor-pointer div {
+    
+        background-color: #dc3545;
+        border-color: #dc3545;
+        border-radius: 50%;
+    }
+    
+            #page_99_google_slide{
+                width:1000px;
+                margin-top: 25px;
+            }
+            #page_99_google_slide_card_outer_most{
+                width:1000px;
+            }
+    
+            .card-title{
+                color :#dc3545;
+            }
+    
+    .form-control:focus,
+    .form-control:active,
+    form-control-inline:focus,
+    form-control-inline:active
+     {
+        outline: none !important;
+        box-shadow: none !important;
+        border-color: black;
+    }
+    
+    .fas.fa-edit.fa-1_5x{
+        font-size: 25px;
+    }
+    
+    input:read-only{
+        background-color: transparent !important;
+    }
+    
+    .fa-calendar-alt.fa-1_5x{
+        font-size: 25px;
+    }
+    
+    textarea{
+        resize: none;
+    }
+
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.media img{
+    width:150px;
+    height:150px;
+}
+
+.list-group{
+    width:450px;
+    height:500px;
+}
+
+.list-group-item-action {
+    background-color: rgb(241, 240, 240);
+  }
+  
+  .list-group-item-action:hover {
+    background-color: white;
+  }
